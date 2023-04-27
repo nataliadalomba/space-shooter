@@ -2,13 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour {
-    [SerializeField] private float _speed = 4.5f;
-
-    void Start() {
-        transform.position = Vector3.zero;
-    }
-
+public class LearningVariables : MonoBehaviour {
+    [SerializeField] private float _speed = 3.5f;
     void Update() {
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
@@ -21,7 +16,7 @@ public class Player : MonoBehaviour {
         //else if position on the y is less than -2.7f
         //y pos = -2.7f
 
-        if (transform.position.y >= 0) {
+        if(transform.position.y >= 0) {
             transform.position = new Vector3(transform.position.x, 0, 0);
         } else if (transform.position.y <= -3.9f) {
             transform.position = new Vector3(transform.position.x, -3.9f, 0);
@@ -32,10 +27,10 @@ public class Player : MonoBehaviour {
         //else if player on the x is less than -12.8
         //x pos = 12.8
 
-        if (transform.position.x >= 15.2f) {
-            transform.position = new Vector3(-15.2f, transform.position.y, 0);
-        } else if (transform.position.x <= -15.2f) {
-            transform.position = new Vector3(15.2f, transform.position.y, 0);
+        if (transform.position.x >= 12.8) {
+            transform.position = new Vector3(-12.8f, transform.position.y, 0);
+        } else if (transform.position.x <= -12.8) {
+            transform.position = new Vector3(12.8f, transform.position.y, 0);
         }
     }
 }
