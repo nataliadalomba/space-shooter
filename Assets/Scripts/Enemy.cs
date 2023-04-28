@@ -27,7 +27,7 @@ public class Enemy : MonoBehaviour {
         //if other is player
         //damage the player (eventually)
         //destroy us
-        if (other.gameObject == GameObject.FindWithTag("Player")) {
+        if (other.tag == "Player") {
 
             Destroy(this.gameObject);
         }
@@ -35,7 +35,7 @@ public class Enemy : MonoBehaviour {
         //if other is laser
         //destroy laser
         //destroy us
-        if (other.gameObject == GameObject.FindWithTag("Laser")) {
+        if (other.tag == "Laser") {
             Destroy(other.gameObject);
             Destroy(this.gameObject);
         }
