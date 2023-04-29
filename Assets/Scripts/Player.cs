@@ -10,6 +10,8 @@ public class Player : MonoBehaviour {
     [SerializeField]
     private float _fireRate = 0.15f;
     private float _canFire = -1f;
+    [SerializeField]
+    private int _lives = 3;
 
     void Start() {
         transform.position = Vector3.zero;
@@ -44,5 +46,18 @@ public class Player : MonoBehaviour {
 
         //laser spawns with an offset of 0.8f in the y (above the player)
         Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+    }
+
+    //is public so Enemy script can communicate with this method
+    //not directly accessing the _lives variable when enemy collides
+    //with player (enemy has rb). bad practice to directly access
+    //public variables. use methods!
+    public void Damage() {
+        _lives--;
+
+        //check if dead
+        //destroy us
+        if (_lives < 1)
+            Destroy(this.gameObject);
     }
 }
