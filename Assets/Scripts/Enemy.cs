@@ -23,34 +23,15 @@ public class Enemy : MonoBehaviour {
         }
     }
 
-    private void OnTriggerEnter(Collider other) {
-        /*if other is player
-        //damage the player
-        destroy us*/
+    private void OnTriggerEnter (Collider other) {
         if (other.tag == "Player") {
-            /*typically best practice to create a variable out of a component you're
-            going to be accessing. avoids more errors and easy to keep track*/
             Player player = other.transform.GetComponent<Player>();
 
-            /*damage the player (take off 1 life)
-            //the only component you can directly access is transform
-            //if you want another component off an object, you need to access
-            //the main root of thr object through transform, then .GetComponent<>
-            //with the component inside. Then any methods in it (including if the
-            //component is your script)
-            //other.transform.GetComponent<Player>().Damage();
-
-            //prepare to also null check to catch any null ref exceptions
-            //when a component or object you're trying to access doesn't exist
-            this ensures handling errors so your end user doesn'y crash*/
             if (player != null)
                 player.Damage();
             Destroy(this.gameObject);
         }
 
-        /*if other is laser
-        //destroy laser
-        destroy us*/
         if (other.tag == "Laser") {
             Destroy(other.gameObject);
             Destroy(this.gameObject);
