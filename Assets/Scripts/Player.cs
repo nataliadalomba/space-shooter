@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
     [SerializeField]
-    private float _speed = 4.5f;
+    private float _speed = 5f;
     [SerializeField]
     private GameObject _laserPrefab;
     [SerializeField]
@@ -49,7 +49,7 @@ public class Player : MonoBehaviour {
         _canFire = Time.time + _fireRate;
 
         //laser spawns with an offset of 0.8f in the y (above the player)
-        Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+        Instantiate(_laserPrefab, transform.position + new Vector3(0, 1.05f, 0), Quaternion.identity);
     }
 
     //is public so Enemy script can communicate with this method

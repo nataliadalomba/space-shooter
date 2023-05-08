@@ -6,8 +6,8 @@ public class Enemy : MonoBehaviour {
 
     [SerializeField]
     private float _speed = 4f;
-    [SerializeField]
-    private GameObject _player;
+    /*[SerializeField]
+    private GameObject _player;*/
 
     /*we have an Enemy prefab in hierachy and we're reusing it
     so we don't need to instantiate or destroy it*/
@@ -23,7 +23,7 @@ public class Enemy : MonoBehaviour {
         }
     }
 
-    private void OnTriggerEnter (Collider other) {
+    private void OnTriggerEnter2D (Collider2D other) {
         if (other.tag == "Player") {
             Player player = other.transform.GetComponent<Player>();
 
