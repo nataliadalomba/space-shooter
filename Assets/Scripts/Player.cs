@@ -10,6 +10,9 @@ public class Player : MonoBehaviour {
     [SerializeField]
     private GameObject _tripleShotLasersPrefab;
     [SerializeField]
+    private GameObject _shieldVisualizer;
+
+    [SerializeField]
     private float _fireRate = 0.15f;
     private float _canFire = -1f;
     [SerializeField]
@@ -22,6 +25,7 @@ public class Player : MonoBehaviour {
     private bool _isShieldPowerUpActive;
 
     private float _speedMultiplier = 2f;
+
 
     void Start() {
         transform.position = Vector3.zero;
@@ -70,6 +74,7 @@ public class Player : MonoBehaviour {
     public void Damage() {
         if (_isShieldPowerUpActive) {
             _isShieldPowerUpActive = false;
+            _shieldVisualizer.SetActive(false);
             return;
         }
         else _lives--;
@@ -108,5 +113,6 @@ public class Player : MonoBehaviour {
 
     public void ShieldPowerUpActive() {
         _isShieldPowerUpActive = true;
+        _shieldVisualizer.SetActive(true);
     }
 }

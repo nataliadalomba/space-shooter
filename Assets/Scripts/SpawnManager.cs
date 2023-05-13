@@ -11,7 +11,7 @@ public class SpawnManager : MonoBehaviour {
     [SerializeField]
     private GameObject[] _powerUps;
 
-    private bool _stopSpawning = false;
+    private bool _spawning = true;
 
     void Start() {
         StartCoroutine(SpawnEnemyRoutine());
@@ -19,7 +19,7 @@ public class SpawnManager : MonoBehaviour {
     }
 
     IEnumerator SpawnEnemyRoutine() {
-        while (_stopSpawning == false) {
+        while (_spawning) {
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 8.5f, 0);
             GameObject newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);
             newEnemy.transform.parent = _enemyContainer.transform;
@@ -28,7 +28,7 @@ public class SpawnManager : MonoBehaviour {
     }
 
     IEnumerator SpawnPowerUpRoutine() {
-        while (_stopSpawning == false) {
+        while (_spawning) {
             yield return new WaitForSeconds(Random.Range(7.0f, 15.0f));
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 8.5f, 0);
             int randomPowerUp = Random.Range(0, 3);
@@ -37,6 +37,6 @@ public class SpawnManager : MonoBehaviour {
     }
 
     public void OnPlayerDeath() {
-        _stopSpawning = true;
+        _spawning = false;
     }
 }
