@@ -5,13 +5,13 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour {
 
     [SerializeField]
-    private GameObject _enemyPrefab;
+    private GameObject enemyPrefab;
     [SerializeField]
-    private GameObject _enemyContainer;
+    private GameObject enemyContainer;
     [SerializeField]
-    private GameObject[] _powerUps;
+    private GameObject[] powerUps;
 
-    private bool _spawning = true;
+    private bool spawning = true;
 
     void Start() {
         StartCoroutine(SpawnEnemyRoutine());
@@ -19,24 +19,24 @@ public class SpawnManager : MonoBehaviour {
     }
 
     IEnumerator SpawnEnemyRoutine() {
-        while (_spawning) {
+        while (spawning) {
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 8.5f, 0);
-            GameObject newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);
-            newEnemy.transform.parent = _enemyContainer.transform;
+            GameObject newEnemy = Instantiate(enemyPrefab, posToSpawn, Quaternion.identity);
+            newEnemy.transform.parent = enemyContainer.transform;
             yield return new WaitForSeconds(5.0f);
         }
     }
 
     IEnumerator SpawnPowerUpRoutine() {
-        while (_spawning) {
+        while (spawning) {
             yield return new WaitForSeconds(Random.Range(7.0f, 15.0f));
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 8.5f, 0);
             int randomPowerUp = Random.Range(0, 3);
-            Instantiate(_powerUps[randomPowerUp], posToSpawn, Quaternion.identity);
+            Instantiate(powerUps[randomPowerUp], posToSpawn, Quaternion.identity);
         }
     }
 
     public void OnPlayerDeath() {
-        _spawning = false;
+        spawning = false;
     }
 }

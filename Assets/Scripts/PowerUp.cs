@@ -5,12 +5,12 @@ using UnityEngine;
 public class PowerUp : MonoBehaviour {
 
     [SerializeField]
-    private float _speed = 3.0f;
+    private float speed = 3.0f;
     [SerializeField] //0 = Triple Shot, 1 = Speed, 2 = Shield
-    private int _powerUpID;
+    private int powerUpID;
 
     void Update() {
-        transform.Translate(Vector3.down * _speed * Time.deltaTime);
+        transform.Translate(Vector3.down * speed * Time.deltaTime);
         if(transform.position.y <= -6f)
             Destroy(gameObject);
     }
@@ -19,7 +19,7 @@ public class PowerUp : MonoBehaviour {
         if(other.tag == "Player") {
             Player player = other.GetComponent<Player>();
             if (player != null) {
-                switch(_powerUpID) {
+                switch(powerUpID) {
                     case 0:
                         player.TripleShotPowerUpActive();
                         break;

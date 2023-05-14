@@ -7,13 +7,13 @@ using TMPro;
 public class UIManager : MonoBehaviour {
 
     [SerializeField]
-    private TMP_Text _scoreText;
+    private TMP_Text scoreText;
 
     void Start() {
-        _scoreText.text = "Score: " + 0;
+        scoreText.text = "Score: " + 0;
     }
 
     public void UpdateScore(int playerScore) {
-        _scoreText.text = "Score: " + playerScore.ToString();
+        scoreText.text = "Score: " + playerScore.ToString();
     }
 }

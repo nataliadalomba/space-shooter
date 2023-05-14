@@ -4,44 +4,44 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
     [SerializeField]
-    private float _speed = 5f;
+    private float speed = 5f;
     [SerializeField]
-    private GameObject _laserPrefab;
+    private GameObject laserPrefab;
     [SerializeField]
-    private GameObject _tripleShotLasersPrefab;
+    private GameObject tripleShotLasersPrefab;
     [SerializeField]
-    private GameObject _shieldVisualizer;
+    private GameObject shieldVisualizer;
 
     [SerializeField]
-    private float _fireRate = 0.15f;
-    private float _canFire = -1f;
+    private float fireRate = 0.15f;
+    private float canFire = -1f;
     [SerializeField]
-    private int _lives = 3;
-    private SpawnManager _spawnManager;
+    private int lives = 3;
+    private SpawnManager spawnManager;
 
-    private float _powerUpDuration = 5.0f;
-    private bool _isTripleShotPowerUpActive;
-    private bool _isSpeedPowerUpActive;
-    private bool _isShieldPowerUpActive;
+    private float powerUpDuration = 5.0f;
+    private bool isTripleShotPowerUpActive;
+    private bool isSpeedPowerUpActive;
+    private bool isShieldPowerUpActive;
 
-    private float _speedMultiplier = 2f;
+    private float speedMultiplier = 2f;
 
-    private int _score;
-    private UIManager _uiManager;
+    private int score;
+    private UIManager uiManager;
 
     void Start() {
         transform.position = Vector3.zero;
-        _spawnManager = GameObject.FindGameObjectWithTag("Spawn Manager").GetComponent<SpawnManager>();
-        _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
-        if (_spawnManager == null)
+        spawnManager = GameObject.FindGameObjectWithTag("Spawn Manager").GetComponent<SpawnManager>();
+        uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        if (spawnManager == null)
             Debug.LogError("The Spawn Manager is null.");
-        if (_uiManager == null)
+        if (uiManager == null)
             Debug.LogError("The UI Manager is null.");
     }
 
     void Update() {
         CalculateMovement();
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > canFire)
             FireLaser();
     }
 
@@ -50,9 +50,7 @@ public class Player : MonoBehaviour {
         float verticalInput = Input.GetAxis("Vertical");
 
         Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
-        transform.Translate(direction * _speed * Time.deltaTime);
-        //if _isSpeedPowerUpActive
-        //increase _speed to 8.5
+        transform.Translate(direction * speed * Time.deltaTime);
 
         transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -3.6f, 0), 0);
 
@@ -63,66 +61,62 @@ public class Player : MonoBehaviour {
     }
 
     void FireLaser() {
-        _canFire = Time.time + _fireRate;
+        canFire = Time.time + fireRate;
 
         if(Input.GetKeyDown(KeyCode.Space)) {
-            if (_isTripleShotPowerUpActive)
-                Instantiate(_tripleShotLasersPrefab, transform.position, Quaternion.identity);
-            else Instantiate(_laserPrefab, transform.position + new Vector3(0, 1.075f, 0), Quaternion.identity);
+            if (isTripleShotPowerUpActive)
+                Instantiate(tripleShotLasersPrefab, transform.position, Quaternion.identity);
+            else Instantiate(laserPrefab, transform.position + new Vector3(0, 1.075f, 0), Quaternion.identity);
         }
     }
 
-    //is public so Enemy script can communicate with this method
-    //not directly accessing the _lives variable when enemy collides
-    //with player (enemy has rb). bad practice to directly access
-    //public variables. use methods!
     public void Damage() {
-        if (_isShieldPowerUpActive) {
-            _isShieldPowerUpActive = false;
-            _shieldVisualizer.SetActive(false);
+        if (isShieldPowerUpActive) {
+            isShieldPowerUpActive = false;
+            shieldVisualizer.SetActive(false);
             return;
         }
-        else _lives--;
+        else lives--;
 
-        if (_lives < 1) {
-            _spawnManager.OnPlayerDeath();
+        if (lives < 1) {
+            spawnManager.OnPlayerDeath();
             Destroy(this.gameObject);
         }
     }
 
     public void TripleShotPowerUpActive() {
-        _isTripleShotPowerUpActive = true;
+        isTripleShotPowerUpActive = true;
         StartCoroutine(TripleShotPowerDownRoutine());
     }
     
     IEnumerator TripleShotPowerDownRoutine() {
-        while(_isTripleShotPowerUpActive) {
-            yield return new WaitForSeconds(_powerUpDuration);
-            _isTripleShotPowerUpActive = false;
+        while(isTripleShotPowerUpActive) {
+            yield return new WaitForSeconds(powerUpDuration);
+            isTripleShotPowerUpActive = false;
         }
     }
 
     public void SpeedPowerUpActive() {
-        _isSpeedPowerUpActive = true;
-        _speed *= _speedMultiplier;
+        isSpeedPowerUpActive = true;
+        speed *= speedMultiplier;
         StartCoroutine(SpeedPowerDownRoutine());
     }
 
     IEnumerator SpeedPowerDownRoutine() {
-        while(_isSpeedPowerUpActive) {
-            yield return new WaitForSeconds(_powerUpDuration);
-            _speed /= _speedMultiplier;
-            _isSpeedPowerUpActive = false;
+        while(isSpeedPowerUpActive) {
+            yield return new WaitForSeconds(powerUpDuration);
+            speed /= speedMultiplier;
+            isSpeedPowerUpActive = false;
         }
     }
 
     public void ShieldPowerUpActive() {
-        _isShieldPowerUpActive = true;
-        _shieldVisualizer.SetActive(true);
+        isShieldPowerUpActive = true;
+        shieldVisualizer.SetActive(true);
     }
 
     public void AddToScore(int points) {
-        _score += points;
-        _uiManager.UpdateScore(_score);
+        score += points;
+        uiManager.UpdateScore(score);
     }
 }
