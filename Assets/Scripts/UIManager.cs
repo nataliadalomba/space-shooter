@@ -18,6 +18,7 @@ public class UIManager : MonoBehaviour {
 
     void Start() {
         scoreText.text = "Score: " + 0;
+        gameOverText.enabled = false;
     }
 
     public void UpdateScore(int playerScore) {
@@ -30,6 +31,17 @@ public class UIManager : MonoBehaviour {
 
     public void GameOverDisplay() {
         gameOverText.enabled = true;
-        Assert.IsTrue(gameOverText.isActiveAndEnabled, "The object must be both active and enabled for the text to show!");
+        Assert.IsTrue(gameOverText.isActiveAndEnabled, "The Game Over text must be both " +
+            "active and enabled for the text to show!");
+        StartCoroutine(GameOverFlickerRoutine());
+    }
+
+    IEnumerator GameOverFlickerRoutine() {
+        while(true) {
+            gameOverText.enabled = true;
+            yield return new WaitForSeconds(0.5f);
+            gameOverText.enabled = false;
+            yield return new WaitForSeconds(0.5f);
+        }
     }
 }
