@@ -76,10 +76,13 @@ public class Player : MonoBehaviour {
             shieldVisualizer.SetActive(false);
             return;
         }
-        else lives--;
+        
+        lives--;
+        uiManager.UpdateLives(lives);
 
         if (lives < 1) {
             spawnManager.OnPlayerDeath();
+            uiManager.GameOverDisplay();
             Destroy(this.gameObject);
         }
     }

@@ -30,7 +30,7 @@ public class PowerUp : MonoBehaviour {
                         player.ShieldPowerUpActive();
                         break;
                     default:
-                        Debug.Log("Invalid PowerUp ID");
+                        Debug.Log("Invalid PowerUp ID.");
                         break;
                 }
             }
