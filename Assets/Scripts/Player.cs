@@ -82,7 +82,7 @@ public class Player : MonoBehaviour {
 
         if (lives < 1) {
             spawnManager.OnPlayerDeath();
-            uiManager.GameOverDisplay();
+            uiManager.GameOverSequence();
             Destroy(this.gameObject);
         }
     }
