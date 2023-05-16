@@ -17,7 +17,6 @@ public class PowerUp : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D other) {
         if(other.tag == "Player") {
-            Debug.Log("Colliding with powerup");
             Player player = other.GetComponent<Player>();
             if (player != null) {
                 switch(powerUpID) {

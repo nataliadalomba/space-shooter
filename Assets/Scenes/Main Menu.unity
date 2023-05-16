@@ -199,7 +199,7 @@ GameObject:
   - component: {fileID: 360737264}
   - component: {fileID: 360737263}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -414,6 +414,7 @@ RectTransform:
   - {fileID: 609585822}
   - {fileID: 992255809}
   - {fileID: 2024771177}
+  - {fileID: 848146775}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -582,12 +583,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 848146773}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 1.006, z: 0}
-  m_LocalScale: {x: 1.0685463, y: 1.071085, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -400.00003, y: -223.89336, z: 0}
+  m_LocalScale: {x: 1.0752667, y: 1.0778214, z: 1.0062894}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_Father: {fileID: 466975900}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &992255808
 GameObject:

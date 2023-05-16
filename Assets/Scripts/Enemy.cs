@@ -9,9 +9,15 @@ public class Enemy : MonoBehaviour {
     private float speed = 4f;
 
     private Player player;
+    private Animator enemyAnimator;
 
     void Start() {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        if (player == null)
+            Debug.LogError("The Player component is null.");
+        enemyAnimator = GetComponent<Animator>();
+        if (enemyAnimator == null)
+            Debug.LogError("The Enemy Animator is null.");
     }
 
     void Update() {
@@ -25,14 +31,18 @@ public class Enemy : MonoBehaviour {
     private void OnTriggerEnter2D (Collider2D other) {
         if (other.tag == "Player") {
             player.Damage();
-            Destroy(this.gameObject);
+            enemyAnimator.SetTrigger("OnEnemyDeath");
+            speed = 0;
+            Destroy(this.gameObject, 2.8f);
         }
 
         if (other.tag == "Laser") {
             Destroy(other.gameObject);
             if (player != null)
                 player.AddToScore(10);
-            Destroy(this.gameObject);
+            enemyAnimator.SetTrigger("OnEnemyDeath");
+            speed = 0;
+            Destroy(this.gameObject, 2.8f);
         }
     }
 }
