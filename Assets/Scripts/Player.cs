@@ -29,8 +29,14 @@ public class Player : MonoBehaviour {
     private int score;
     private UIManager uiManager;
 
+    private SpriteRenderer rightWing, leftWing;
+    private SpriteRenderer[] wingDamageSprites = new SpriteRenderer[2];
+
     void Start() {
         transform.position = Vector3.zero;
+        wingDamageSprites[0] = transform.GetChild(2).GetComponent<SpriteRenderer>();
+        wingDamageSprites[1] = transform.GetChild(3).GetComponent<SpriteRenderer>();
+
         spawnManager = GameObject.FindGameObjectWithTag("Spawn Manager").GetComponent<SpawnManager>();
         uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         if (spawnManager == null)
@@ -79,8 +85,9 @@ public class Player : MonoBehaviour {
         
         lives--;
         uiManager.UpdateLives(lives);
-
-        if (lives < 1) {
+        if (lives == 2 || lives == 1)
+            wingDamageSprites[Random.Range(0, wingDamageSprites.Length)].enabled = true;
+        else if (lives <= 0) {
             spawnManager.OnPlayerDeath();
             uiManager.GameOverSequence();
             Destroy(this.gameObject);
