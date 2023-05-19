@@ -29,13 +29,12 @@ public class Player : MonoBehaviour {
     private int score;
     private UIManager uiManager;
 
-    private SpriteRenderer rightWing, leftWing;
     private SpriteRenderer[] wingDamageSprites = new SpriteRenderer[2];
 
     void Start() {
         transform.position = Vector3.zero;
-        wingDamageSprites[0] = transform.GetChild(2).GetComponent<SpriteRenderer>();
-        wingDamageSprites[1] = transform.GetChild(3).GetComponent<SpriteRenderer>();
+        wingDamageSprites[0] = transform.GetChild(2).GetComponent<SpriteRenderer>(); //rightWing
+        wingDamageSprites[1] = transform.GetChild(3).GetComponent<SpriteRenderer>(); //leftWing
 
         spawnManager = GameObject.FindGameObjectWithTag("Spawn Manager").GetComponent<SpawnManager>();
         uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
