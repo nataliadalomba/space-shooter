@@ -30,18 +30,24 @@ public class Player : MonoBehaviour {
     private UIManager uiManager;
 
     private SpriteRenderer[] wingDamageSprites = new SpriteRenderer[2];
+    private new AudioSource audio;
+    [SerializeField]
+    private AudioClip laserClip;
 
     void Start() {
         transform.position = Vector3.zero;
-        wingDamageSprites[0] = transform.GetChild(2).GetComponent<SpriteRenderer>(); //rightWing
         wingDamageSprites[1] = transform.GetChild(3).GetComponent<SpriteRenderer>(); //leftWing
 
         spawnManager = GameObject.FindGameObjectWithTag("Spawn Manager").GetComponent<SpawnManager>();
         uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        audio = GetComponent<AudioSource>();
+
         if (spawnManager == null)
             Debug.LogError("The Spawn Manager is null.");
         if (uiManager == null)
             Debug.LogError("The UI Manager is null.");
+        if (audio == null)
+            Debug.LogError("The AudioSource on the player is null.");
     }
 
     void Update() {
@@ -68,10 +74,12 @@ public class Player : MonoBehaviour {
     void FireLaser() {
         canFire = Time.time + fireRate;
 
-        if(Input.GetKeyDown(KeyCode.Space)) {
+        if (Input.GetKeyDown(KeyCode.Space)) {
             if (isTripleShotPowerUpActive)
                 Instantiate(tripleShotLasersPrefab, transform.position, Quaternion.identity);
             else Instantiate(laserPrefab, transform.position + new Vector3(0, 1.075f, 0), Quaternion.identity);
+            audio.clip = laserClip;
+            audio.Play();
         }
     }
 

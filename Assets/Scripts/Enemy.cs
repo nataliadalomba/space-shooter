@@ -11,13 +11,19 @@ public class Enemy : MonoBehaviour {
     private Player player;
     private Animator anim;
 
+    private new AudioSource audio;
+
     void Start() {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-        if (player == null)
-            Debug.LogError("The Player component is null.");
         anim = GetComponent<Animator>();
+        audio = GetComponent<AudioSource>();
+
+        if (player == null)
+            Debug.LogError("The Player component on the Enemy is null.");
         if (anim == null)
             Debug.LogError("The Enemy Animator is null.");
+        if (audio == null)
+            Debug.LogError("The AudioSource on the enemy is null.");
     }
 
     void Update() {
@@ -33,7 +39,8 @@ public class Enemy : MonoBehaviour {
             player.Damage();
             anim.SetTrigger("OnEnemyDeath");
             speed = 0;
-            Destroy(this.gameObject, 2.8f);
+            audio.Play();
+            Destroy(this.gameObject, 3f);
         }
 
         if (other.tag == "Laser") {
@@ -42,7 +49,8 @@ public class Enemy : MonoBehaviour {
                 player.AddToScore(10);
             anim.SetTrigger("OnEnemyDeath");
             speed = 0;
-            Destroy(this.gameObject, 2.8f);
+            audio.Play();
+            Destroy(this.gameObject, 3f);
         }
     }
 }

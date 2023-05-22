@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3922572707049939587}
   - component: {fileID: 4377167407919297852}
   m_Layer: 0
-  m_Name: Shield_PowerUp
+  m_Name: Shield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -146,6 +146,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 3
   powerUpID: 2
+  clip: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
 --- !u!95 &4377167407919297852
 Animator:
   serializedVersion: 3

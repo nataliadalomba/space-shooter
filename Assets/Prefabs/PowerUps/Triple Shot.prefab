@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8087199718197292987}
   - component: {fileID: 6386190855637297424}
   m_Layer: 0
-  m_Name: Triple Shot_PowerUp
+  m_Name: Triple Shot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -144,8 +144,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83c36b6e2325cc248bbb7d4bff30bec3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 3
-  _powerUpID: 0
+  speed: 3
+  powerUpID: 0
+  clip: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
 --- !u!95 &6386190855637297424
 Animator:
   serializedVersion: 3
