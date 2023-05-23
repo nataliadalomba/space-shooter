@@ -11,6 +11,8 @@ public class Player : MonoBehaviour {
     private GameObject tripleShotLasersPrefab;
     [SerializeField]
     private GameObject shieldVisualizer;
+    [SerializeField]
+    private SpriteRenderer thrusterSprite;
 
     [SerializeField]
     private float fireRate = 0.15f;
@@ -116,6 +118,7 @@ public class Player : MonoBehaviour {
     public void SpeedPowerUpActive() {
         isSpeedPowerUpActive = true;
         speed *= speedMultiplier;
+        thrusterSprite.color = Color.cyan;
         StartCoroutine(SpeedPowerDownRoutine());
     }
 
@@ -123,6 +126,7 @@ public class Player : MonoBehaviour {
         while(isSpeedPowerUpActive) {
             yield return new WaitForSeconds(powerUpDuration);
             speed /= speedMultiplier;
+            thrusterSprite.color = Color.white;
             isSpeedPowerUpActive = false;
         }
     }

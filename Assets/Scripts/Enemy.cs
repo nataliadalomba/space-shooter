@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.AI;
+﻿using UnityEngine;
 
 public class Enemy : MonoBehaviour {
 
@@ -12,11 +9,13 @@ public class Enemy : MonoBehaviour {
     private Animator anim;
 
     private new AudioSource audio;
+    private Collider2D col2D;
 
     void Start() {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         anim = GetComponent<Animator>();
         audio = GetComponent<AudioSource>();
+        col2D = GetComponent<Collider2D>();
 
         if (player == null)
             Debug.LogError("The Player component on the Enemy is null.");
@@ -24,9 +23,15 @@ public class Enemy : MonoBehaviour {
             Debug.LogError("The Enemy Animator is null.");
         if (audio == null)
             Debug.LogError("The AudioSource on the enemy is null.");
+        if (col2D == null)
+            Debug.LogError("The Collider2D on the enemy is null.");
     }
 
     void Update() {
+        CalculateMovement();
+    }
+
+    void CalculateMovement() {
         transform.Translate(Vector3.down * speed * Time.deltaTime);
         if (transform.position.y <= -7f) {
             float randX = Random.Range(-10f, 10f);
@@ -40,6 +45,8 @@ public class Enemy : MonoBehaviour {
             anim.SetTrigger("OnEnemyDeath");
             speed = 0;
             audio.Play();
+
+            col2D.enabled = false;
             Destroy(this.gameObject, 3f);
         }
 
@@ -50,6 +57,8 @@ public class Enemy : MonoBehaviour {
             anim.SetTrigger("OnEnemyDeath");
             speed = 0;
             audio.Play();
+
+            col2D.enabled = false;
             Destroy(this.gameObject, 3f);
         }
     }
