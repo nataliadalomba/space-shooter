@@ -622,7 +622,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &567187257
 GameObject:
@@ -703,7 +703,7 @@ Transform:
   m_LocalScale: {x: 1.0682777, y: 1.0748827, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &761659930
 GameObject:
@@ -724,7 +724,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &761659931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -746,6 +746,9 @@ MonoBehaviour:
   thrusterSprite: {fileID: 1002293874}
   fireRate: 0.15
   lives: 3
+  wingDamageSprites:
+  - {fileID: 319085999}
+  - {fileID: 1751732309}
   laserClip: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
 --- !u!212 &761659932
 SpriteRenderer:
@@ -813,7 +816,7 @@ Transform:
   - {fileID: 319085998}
   - {fileID: 1751732308}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &761659934
 BoxCollider2D:
@@ -2082,7 +2085,7 @@ PrefabInstance:
     - target: {fileID: 7584372984902056784, guid: 0c58949888c43ac4f8c74f1a476bd151,
         type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7584372984902056784, guid: 0c58949888c43ac4f8c74f1a476bd151,
         type: 3}

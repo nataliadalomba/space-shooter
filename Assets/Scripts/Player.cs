@@ -31,14 +31,16 @@ public class Player : MonoBehaviour {
     private int score;
     private UIManager uiManager;
 
+    [SerializeField]
     private SpriteRenderer[] wingDamageSprites = new SpriteRenderer[2];
     private new AudioSource audio;
     [SerializeField]
     private AudioClip laserClip;
 
+    private bool canTakeDamage = true;
+
     void Start() {
         transform.position = Vector3.zero;
-        wingDamageSprites[1] = transform.GetChild(3).GetComponent<SpriteRenderer>(); //leftWing
 
         spawnManager = GameObject.FindGameObjectWithTag("Spawn Manager").GetComponent<SpawnManager>();
         uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
@@ -91,15 +93,23 @@ public class Player : MonoBehaviour {
             shieldVisualizer.SetActive(false);
             return;
         }
-        
-        lives--;
-        uiManager.UpdateLives(lives);
-        if (lives == 2 || lives == 1)
-            wingDamageSprites[Random.Range(0, wingDamageSprites.Length)].enabled = true;
-        else if (lives <= 0) {
-            spawnManager.OnPlayerDeath();
-            uiManager.GameOverSequence();
-            Destroy(this.gameObject);
+
+        if (canTakeDamage) {
+            StartCoroutine(InvincibilityRoutine());
+            lives--;
+            uiManager.UpdateLives(lives);
+            if (lives == 2)
+                wingDamageSprites[Random.Range(0, wingDamageSprites.Length)].enabled = true;
+            else if (lives == 1) {
+                if (wingDamageSprites[0].enabled == true)
+                    wingDamageSprites[1].enabled = true;
+                else wingDamageSprites[0].enabled = true;
+            }
+            else if (lives <= 0) {
+                spawnManager.OnPlayerDeath();
+                uiManager.GameOverSequence();
+                Destroy(this.gameObject);
+            }
         }
     }
 
@@ -139,5 +149,11 @@ public class Player : MonoBehaviour {
     public void AddToScore(int points) {
         score += points;
         uiManager.UpdateScore(score);
+    }
+
+    private IEnumerator InvincibilityRoutine() {
+        canTakeDamage = false;
+        yield return new WaitForSeconds(2f);
+        canTakeDamage = true;
     }
 }

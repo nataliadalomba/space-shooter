@@ -9,7 +9,14 @@ public class Enemy : MonoBehaviour {
     private Animator anim;
 
     private new AudioSource audio;
+    [SerializeField]
+    private GameObject laserPrefab;
+    private float fireRate = 3.0f;
+    private float canFire = -1;
+
     private Collider2D col2D;
+
+    private bool isAlive = true;
 
     void Start() {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
@@ -29,6 +36,7 @@ public class Enemy : MonoBehaviour {
 
     void Update() {
         CalculateMovement();
+        FireLaser();
     }
 
     void CalculateMovement() {
@@ -36,6 +44,17 @@ public class Enemy : MonoBehaviour {
         if (transform.position.y <= -7f) {
             float randX = Random.Range(-10f, 10f);
             transform.position = new Vector3(randX, 9, 0);
+        }
+    }
+
+    void FireLaser() {
+        if (Time.time > canFire && isAlive) {
+            fireRate = Random.Range(3f, 7f);
+            canFire = Time.time + fireRate;
+            GameObject enemyLaser = Instantiate (laserPrefab, transform.position, Quaternion.identity);
+            Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+            for (int i = 0; i < lasers.Length; i++)
+                lasers[i].AssignEnemyLaser();
         }
     }
 
@@ -47,19 +66,25 @@ public class Enemy : MonoBehaviour {
             audio.Play();
 
             col2D.enabled = false;
+            isAlive = false;
             Destroy(this.gameObject, 3f);
         }
 
         if (other.tag == "Laser") {
-            Destroy(other.gameObject);
-            if (player != null)
-                player.AddToScore(10);
-            anim.SetTrigger("OnEnemyDeath");
-            speed = 0;
-            audio.Play();
+            Laser laser = other.GetComponent<Laser>();
+            if (laser.IsEnemyLaser() == false) {
+                Destroy(other.gameObject);
+                if (player != null)
+                    player.AddToScore(100);
+                anim.SetTrigger("OnEnemyDeath");
+                speed = 0;
+                audio.Play();
 
-            col2D.enabled = false;
-            Destroy(this.gameObject, 3f);
+                col2D.enabled = false;
+                isAlive = false;
+                Destroy(this.gameObject, 3f);
+            }
+
         }
     }
 }
