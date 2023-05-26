@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
+using UnityEditor.Build;
 using UnityEngine;
 
 public class Player : MonoBehaviour {
@@ -11,6 +11,7 @@ public class Player : MonoBehaviour {
     private GameObject tripleShotLasersPrefab;
     [SerializeField]
     private GameObject shieldVisualizer;
+    private Color shieldAlpha;
     [SerializeField]
     private SpriteRenderer thrusterSprite;
 
@@ -26,8 +27,8 @@ public class Player : MonoBehaviour {
     private bool isSpeedPowerUpActive;
     private bool isShieldPowerUpActive;
 
-    private float speedMultiplier = 2f;
-
+    private float shiftPressedSpeed = 7f;
+    private float speedPowerUpMultiplier = 2f;
     private int score;
     private UIManager uiManager;
 
@@ -38,6 +39,8 @@ public class Player : MonoBehaviour {
     private AudioClip laserClip;
 
     private bool canTakeDamage = true;
+    [SerializeField]
+    private int shieldProtectionLeft = 3;
 
     void Start() {
         transform.position = Vector3.zero;
@@ -45,6 +48,7 @@ public class Player : MonoBehaviour {
         spawnManager = GameObject.FindGameObjectWithTag("Spawn Manager").GetComponent<SpawnManager>();
         uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         audio = GetComponent<AudioSource>();
+        shieldAlpha = shieldVisualizer.GetComponent<SpriteRenderer>().color;
 
         if (spawnManager == null)
             Debug.LogError("The Spawn Manager is null.");
@@ -52,6 +56,10 @@ public class Player : MonoBehaviour {
             Debug.LogError("The UI Manager is null.");
         if (audio == null)
             Debug.LogError("The AudioSource on the player is null.");
+        if (shieldAlpha == null)
+            Debug.LogError("The SpriteRenderer on the Shield is null.");
+        if (shieldAlpha != null)
+            Debug.Log("The alpha on the shield's SpriteRenderer has been grabbed");
     }
 
     void Update() {
@@ -65,6 +73,10 @@ public class Player : MonoBehaviour {
         float verticalInput = Input.GetAxis("Vertical");
 
         Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
+        float origSpeed = 5f;
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+            speed = shiftPressedSpeed;
+        else speed = origSpeed;
         transform.Translate(direction * speed * Time.deltaTime);
 
         transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -3.6f, 0), 0);
@@ -89,9 +101,29 @@ public class Player : MonoBehaviour {
 
     public void Damage() {
         if (isShieldPowerUpActive) {
-            isShieldPowerUpActive = false;
-            shieldVisualizer.SetActive(false);
-            return;
+            switch (shieldProtectionLeft) {
+                case 3:
+                    shieldAlpha.a = 1f;
+                    shieldProtectionLeft--;
+                    StartCoroutine(InvincibilityRoutine());
+                    break;
+                case 2:
+                    shieldAlpha.a = .66f;
+                    shieldProtectionLeft--;
+                    StartCoroutine(InvincibilityRoutine());
+                    break;
+                case 1:
+                    shieldAlpha.a = .33f;
+                    shieldProtectionLeft--;
+                    StartCoroutine(InvincibilityRoutine());
+                    break;
+                case 0:
+                    shieldAlpha.a = 0f;
+                    isShieldPowerUpActive = false;
+                    shieldVisualizer.SetActive(false);
+                    StartCoroutine(InvincibilityRoutine());
+                    break;
+            }
         }
 
         if (canTakeDamage) {
@@ -112,7 +144,7 @@ public class Player : MonoBehaviour {
             }
         }
     }
-
+    #region
     public void TripleShotPowerUpActive() {
         isTripleShotPowerUpActive = true;
         StartCoroutine(TripleShotPowerDownRoutine());
@@ -127,7 +159,7 @@ public class Player : MonoBehaviour {
 
     public void SpeedPowerUpActive() {
         isSpeedPowerUpActive = true;
-        speed *= speedMultiplier;
+        speed *= speedPowerUpMultiplier;
         thrusterSprite.color = Color.cyan;
         StartCoroutine(SpeedPowerDownRoutine());
     }
@@ -135,12 +167,12 @@ public class Player : MonoBehaviour {
     IEnumerator SpeedPowerDownRoutine() {
         while(isSpeedPowerUpActive) {
             yield return new WaitForSeconds(powerUpDuration);
-            speed /= speedMultiplier;
+            speed /= speedPowerUpMultiplier;
             thrusterSprite.color = Color.white;
             isSpeedPowerUpActive = false;
         }
     }
-
+    #endregion
     public void ShieldPowerUpActive() {
         isShieldPowerUpActive = true;
         shieldVisualizer.SetActive(true);

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MainMenuManager : MonoBehaviour {
+public class TitleScreenManager : MonoBehaviour {
     //responsible to launch the game
 
     public void LoadGame() {

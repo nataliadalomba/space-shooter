@@ -9,8 +9,6 @@ public class GameManager : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.R) && isGameOver)
             SceneManager.LoadScene(1); //game scene
 
-        //if the escape key is pressed
-        //quit application
         if (Input.GetKeyDown(KeyCode.Escape))
             Application.Quit();
     }
