@@ -1,19 +1,24 @@
 ﻿using System.Collections;
-using UnityEditor.Build;
 using UnityEngine;
 
 public class Player : MonoBehaviour {
+    /// <summary>
+    /// The player's currrent speed.
+    /// </summary>
     [SerializeField]
     private float speed = 5f;
+    private float shiftSpeed = 7f;
+    #region
+    private float speedPowerUpMultiplier = 2f;
+
+    private bool canTakeDamage = true;
     [SerializeField]
     private GameObject laserPrefab;
     [SerializeField]
-    private GameObject tripleShotLasersPrefab;
+    private SpriteRenderer[] wingDamageSprites = new SpriteRenderer[2];
+    private new AudioSource audio;
     [SerializeField]
-    private GameObject shieldVisualizer;
-    private Color shieldAlpha;
-    [SerializeField]
-    private SpriteRenderer thrusterSprite;
+    private AudioClip laserClip;
 
     [SerializeField]
     private float fireRate = 0.15f;
@@ -26,21 +31,19 @@ public class Player : MonoBehaviour {
     private bool isTripleShotPowerUpActive;
     private bool isSpeedPowerUpActive;
     private bool isShieldPowerUpActive;
-
-    private float shiftPressedSpeed = 7f;
-    private float speedPowerUpMultiplier = 2f;
-    private int score;
-    private UIManager uiManager;
-
-    [SerializeField]
-    private SpriteRenderer[] wingDamageSprites = new SpriteRenderer[2];
-    private new AudioSource audio;
-    [SerializeField]
-    private AudioClip laserClip;
-
-    private bool canTakeDamage = true;
     [SerializeField]
     private int shieldProtectionLeft = 3;
+    [SerializeField]
+    private GameObject tripleShotLasersPrefab;
+    [SerializeField]
+    private GameObject shieldVisualizer;
+    private Color shieldAlpha;
+    [SerializeField]
+    private SpriteRenderer thrusterSprite;
+
+    private int score;
+    private UIManager uiManager;
+    #endregion
 
     void Start() {
         transform.position = Vector3.zero;
@@ -73,10 +76,10 @@ public class Player : MonoBehaviour {
         float verticalInput = Input.GetAxis("Vertical");
 
         Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
-        float origSpeed = 5f;
-        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
-            speed = shiftPressedSpeed;
-        else speed = origSpeed;
+        if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && isSpeedPowerUpActive == false)
+            speed = shiftSpeed;
+        else if (isSpeedPowerUpActive == false)
+            speed = getBaseSpeed();
         transform.Translate(direction * speed * Time.deltaTime);
 
         transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -3.6f, 0), 0);
@@ -144,6 +147,12 @@ public class Player : MonoBehaviour {
             }
         }
     }
+
+    private float getBaseSpeed() {
+        speed = 5f;
+        return speed;
+    }
+
     #region
     public void TripleShotPowerUpActive() {
         isTripleShotPowerUpActive = true;
