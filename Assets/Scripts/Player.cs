@@ -29,29 +29,33 @@ public class Player : MonoBehaviour {
 
     private float powerUpDuration = 5.0f;
     private bool isTripleShotPowerUpActive;
-    private bool isSpeedPowerUpActive;
-    private bool isShieldPowerUpActive;
-    [SerializeField]
-    private int shieldProtectionLeft = 3;
     [SerializeField]
     private GameObject tripleShotLasersPrefab;
+    private bool isSpeedPowerUpActive;
+
+    private bool IsShieldPowerUpActive => currentShieldProtection > 0;
+    private int currentShieldProtection;
     [SerializeField]
-    private GameObject shieldVisualizer;
-    private Color shieldAlpha;
+    private int totalShieldProtection = 3;
+    #endregion
+    [SerializeField]
+    private GameObject shield;
+    private SpriteRenderer shieldVisualizer;
+
+    #region
     [SerializeField]
     private SpriteRenderer thrusterSprite;
 
     private int score;
     private UIManager uiManager;
     #endregion
-
     void Start() {
         transform.position = Vector3.zero;
 
         spawnManager = GameObject.FindGameObjectWithTag("Spawn Manager").GetComponent<SpawnManager>();
         uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         audio = GetComponent<AudioSource>();
-        shieldAlpha = shieldVisualizer.GetComponent<SpriteRenderer>().color;
+        shieldVisualizer = shield.GetComponent<SpriteRenderer>();
 
         if (spawnManager == null)
             Debug.LogError("The Spawn Manager is null.");
@@ -59,10 +63,8 @@ public class Player : MonoBehaviour {
             Debug.LogError("The UI Manager is null.");
         if (audio == null)
             Debug.LogError("The AudioSource on the player is null.");
-        if (shieldAlpha == null)
+        if (shieldVisualizer == null)
             Debug.LogError("The SpriteRenderer on the Shield is null.");
-        if (shieldAlpha != null)
-            Debug.Log("The alpha on the shield's SpriteRenderer has been grabbed");
     }
 
     void Update() {
@@ -103,57 +105,44 @@ public class Player : MonoBehaviour {
     }
 
     public void Damage() {
-        if (isShieldPowerUpActive) {
-            switch (shieldProtectionLeft) {
-                case 3:
-                    shieldAlpha.a = 1f;
-                    shieldProtectionLeft--;
-                    StartCoroutine(InvincibilityRoutine());
-                    break;
-                case 2:
-                    shieldAlpha.a = .66f;
-                    shieldProtectionLeft--;
-                    StartCoroutine(InvincibilityRoutine());
-                    break;
-                case 1:
-                    shieldAlpha.a = .33f;
-                    shieldProtectionLeft--;
-                    StartCoroutine(InvincibilityRoutine());
-                    break;
-                case 0:
-                    shieldAlpha.a = 0f;
-                    isShieldPowerUpActive = false;
-                    shieldVisualizer.SetActive(false);
-                    StartCoroutine(InvincibilityRoutine());
-                    break;
+        if (IsShieldPowerUpActive) {
+            currentShieldProtection--;
+            UpdateShieldColor();
+            if (currentShieldProtection <= 0)
+                ShieldPowerDown();
+        } else {
+            if (canTakeDamage) {
+                lives--;
+                Debug.Log("no shield on and minus a life");
+                uiManager.UpdateLives(lives);
+                if (lives == 2)
+                    wingDamageSprites[Random.Range(0, wingDamageSprites.Length)].enabled = true;
+                else if (lives == 1) {
+                    if (wingDamageSprites[0].enabled == true)
+                        wingDamageSprites[1].enabled = true;
+                    else wingDamageSprites[0].enabled = true;
+                }
+                else if (lives <= 0) {
+                    spawnManager.OnPlayerDeath();
+                    uiManager.GameOverSequence();
+                    Destroy(this.gameObject);
+                }
             }
         }
-
-        if (canTakeDamage) {
-            StartCoroutine(InvincibilityRoutine());
-            lives--;
-            uiManager.UpdateLives(lives);
-            if (lives == 2)
-                wingDamageSprites[Random.Range(0, wingDamageSprites.Length)].enabled = true;
-            else if (lives == 1) {
-                if (wingDamageSprites[0].enabled == true)
-                    wingDamageSprites[1].enabled = true;
-                else wingDamageSprites[0].enabled = true;
-            }
-            else if (lives <= 0) {
-                spawnManager.OnPlayerDeath();
-                uiManager.GameOverSequence();
-                Destroy(this.gameObject);
-            }
-        }
+        StartCoroutine(InvincibilityRoutine());
     }
 
+    private void UpdateShieldColor() {
+        Color c = shieldVisualizer.color;
+        c.a = (float) currentShieldProtection / totalShieldProtection;
+        shieldVisualizer.color = c;
+    }
+    #region
     private float getBaseSpeed() {
         speed = 5f;
         return speed;
     }
 
-    #region
     public void TripleShotPowerUpActive() {
         isTripleShotPowerUpActive = true;
         StartCoroutine(TripleShotPowerDownRoutine());
@@ -183,8 +172,15 @@ public class Player : MonoBehaviour {
     }
     #endregion
     public void ShieldPowerUpActive() {
-        isShieldPowerUpActive = true;
-        shieldVisualizer.SetActive(true);
+        canTakeDamage = false;
+        currentShieldProtection = totalShieldProtection;
+        UpdateShieldColor();
+        shield.SetActive(true);
+    }
+
+    private void ShieldPowerDown() {
+        canTakeDamage = true;
+        shield.SetActive(false);
     }
 
     public void AddToScore(int points) {
@@ -193,8 +189,10 @@ public class Player : MonoBehaviour {
     }
 
     private IEnumerator InvincibilityRoutine() {
+        Debug.Log("coroutine start");
         canTakeDamage = false;
         yield return new WaitForSeconds(2f);
         canTakeDamage = true;
+        Debug.Log("coroutine end");
     }
 }
