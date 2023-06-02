@@ -2,16 +2,17 @@
 using UnityEngine;
 
 public class Player : MonoBehaviour {
+    #region
     /// <summary>
     /// The player's currrent speed.
     /// </summary>
     [SerializeField]
     private float speed = 5f;
     private float shiftSpeed = 7f;
-    #region
     private float speedPowerUpMultiplier = 2f;
-
+    #endregion
     private bool canTakeDamage = true;
+    #region
     [SerializeField]
     private GameObject laserPrefab;
     [SerializeField]
@@ -32,41 +33,40 @@ public class Player : MonoBehaviour {
     [SerializeField]
     private GameObject tripleShotLasersPrefab;
     private bool isSpeedPowerUpActive;
-
+    #endregion
     private bool IsShieldPowerUpActive => currentShieldProtection > 0;
     private int currentShieldProtection;
     [SerializeField]
     private int totalShieldProtection = 3;
-    #endregion
     [SerializeField]
     private GameObject shield;
     private SpriteRenderer shieldVisualizer;
-
     #region
     [SerializeField]
     private SpriteRenderer thrusterSprite;
 
     private int score;
     private UIManager uiManager;
-    #endregion
     void Start() {
         transform.position = Vector3.zero;
 
         spawnManager = GameObject.FindGameObjectWithTag("Spawn Manager").GetComponent<SpawnManager>();
         uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         audio = GetComponent<AudioSource>();
+    #endregion
         shieldVisualizer = shield.GetComponent<SpriteRenderer>();
-
+        #region
         if (spawnManager == null)
             Debug.LogError("The Spawn Manager is null.");
         if (uiManager == null)
             Debug.LogError("The UI Manager is null.");
         if (audio == null)
             Debug.LogError("The AudioSource on the player is null.");
+        #endregion
         if (shieldVisualizer == null)
             Debug.LogError("The SpriteRenderer on the Shield is null.");
     }
-
+    #region
     void Update() {
         CalculateMovement();
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > canFire)
@@ -103,7 +103,7 @@ public class Player : MonoBehaviour {
             audio.Play();
         }
     }
-
+    #endregion
     public void Damage() {
         if (IsShieldPowerUpActive) {
             currentShieldProtection--;
