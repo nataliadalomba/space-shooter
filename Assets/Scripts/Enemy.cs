@@ -1,16 +1,13 @@
 ﻿using UnityEngine;
 
 public class Enemy : MonoBehaviour {
-
-    [SerializeField]
-    private float speed = 4f;
+    [SerializeField] private float speed = 4f;
+    [SerializeField] private GameObject laserPrefab;
 
     private Player player;
     private Animator anim;
 
     private new AudioSource audio;
-    [SerializeField]
-    private GameObject laserPrefab;
     private float fireRate = 3.0f;
     private float canFire = -1;
 
@@ -18,7 +15,7 @@ public class Enemy : MonoBehaviour {
 
     private bool isAlive = true;
 
-    void Start() {
+    private void Start() {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         anim = GetComponent<Animator>();
         audio = GetComponent<AudioSource>();
@@ -34,22 +31,22 @@ public class Enemy : MonoBehaviour {
             Debug.LogError("The Collider2D on the enemy is null.");
     }
 
-    void Update() {
+    private void Update() {
         CalculateMovement();
         FireLaser();
     }
 
-    void CalculateMovement() {
+    private void CalculateMovement() {
         transform.Translate(Vector3.down * speed * Time.deltaTime);
-        if (transform.position.y <= -7f) {
-            float randX = Random.Range(-10f, 10f);
+        if (transform.position.y <= -7) {
+            float randX = Random.Range((float) -10, 10);
             transform.position = new Vector3(randX, 9, 0);
         }
     }
 
-    void FireLaser() {
+    private void FireLaser() {
         if (Time.time > canFire && isAlive) {
-            fireRate = Random.Range(3f, 7f);
+            fireRate = Random.Range(3, 7);
             canFire = Time.time + fireRate;
             GameObject enemyLaser = Instantiate (laserPrefab, transform.position, Quaternion.identity);
             Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
@@ -58,16 +55,16 @@ public class Enemy : MonoBehaviour {
         }
     }
 
-    private void OnTriggerEnter2D (Collider2D other) {
+    private void OnTriggerEnter2D(Collider2D other) {
         if (other.tag == "Player") {
-            player.Damage();
+            player.TryDamage();
             anim.SetTrigger("OnEnemyDeath");
             speed = 0;
             audio.Play();
 
             col2D.enabled = false;
             isAlive = false;
-            Destroy(this.gameObject, 3f);
+            Destroy(this.gameObject, 3);
         }
 
         if (other.tag == "Laser") {
@@ -82,7 +79,7 @@ public class Enemy : MonoBehaviour {
 
                 col2D.enabled = false;
                 isAlive = false;
-                Destroy(this.gameObject, 3f);
+                Destroy(this.gameObject, 3);
             }
 
         }

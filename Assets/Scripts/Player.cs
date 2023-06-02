@@ -2,78 +2,67 @@
 using UnityEngine;
 
 public class Player : MonoBehaviour {
-    #region
-    /// <summary>
-    /// The player's currrent speed.
-    /// </summary>
-    [SerializeField]
-    private float speed = 5f;
-    private float shiftSpeed = 7f;
-    private float speedPowerUpMultiplier = 2f;
-    #endregion
-    private bool canTakeDamage = true;
-    #region
-    [SerializeField]
-    private GameObject laserPrefab;
-    [SerializeField]
-    private SpriteRenderer[] wingDamageSprites = new SpriteRenderer[2];
-    private new AudioSource audio;
-    [SerializeField]
-    private AudioClip laserClip;
+    [Tooltip("The player's currrent speed.")]
+    [SerializeField] private float speed = 5;
 
-    [SerializeField]
-    private float fireRate = 0.15f;
-    private float canFire = -1f;
-    [SerializeField]
-    private int lives = 3;
+    [SerializeField] private GameObject laserPrefab;
+    [SerializeField] private SpriteRenderer[] wingDamageSprites = new SpriteRenderer[2];
+    [SerializeField] private AudioClip laserClip;
+    [SerializeField] private float fireRate = 0.15f;
+    [SerializeField] private int lives = 3;
+    [SerializeField] private GameObject tripleShotLasersPrefab;
+    [SerializeField] private int totalShieldProtection = 3;
+    [SerializeField] private GameObject shield;
+    [SerializeField] private SpriteRenderer thrusterSprite;
+
+    private float shiftSpeed = 7;
+    private float speedPowerUpMultiplier = 2;
+
+    private new AudioSource audio;
+
+    private float canFire = -1;
     private SpawnManager spawnManager;
 
-    private float powerUpDuration = 5.0f;
+    private float powerUpDuration = 5;
     private bool isTripleShotPowerUpActive;
-    [SerializeField]
-    private GameObject tripleShotLasersPrefab;
     private bool isSpeedPowerUpActive;
-    #endregion
-    private bool IsShieldPowerUpActive => currentShieldProtection > 0;
+
     private int currentShieldProtection;
-    [SerializeField]
-    private int totalShieldProtection = 3;
-    [SerializeField]
-    private GameObject shield;
     private SpriteRenderer shieldVisualizer;
-    #region
-    [SerializeField]
-    private SpriteRenderer thrusterSprite;
+    private float timeInvincibleUntil = 0;
 
     private int score;
     private UIManager uiManager;
-    void Start() {
+
+    public bool IsInvincible => Time.time <= timeInvincibleUntil;
+    public bool IsShieldPowerUpActive => currentShieldProtection > 0;
+
+    #region Unity Messages
+    private void Start() {
         transform.position = Vector3.zero;
 
         spawnManager = GameObject.FindGameObjectWithTag("Spawn Manager").GetComponent<SpawnManager>();
         uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         audio = GetComponent<AudioSource>();
-    #endregion
         shieldVisualizer = shield.GetComponent<SpriteRenderer>();
-        #region
         if (spawnManager == null)
             Debug.LogError("The Spawn Manager is null.");
         if (uiManager == null)
             Debug.LogError("The UI Manager is null.");
         if (audio == null)
             Debug.LogError("The AudioSource on the player is null.");
-        #endregion
         if (shieldVisualizer == null)
             Debug.LogError("The SpriteRenderer on the Shield is null.");
     }
-    #region
-    void Update() {
+
+    private void Update() {
         CalculateMovement();
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > canFire)
             FireLaser();
     }
+    #endregion
 
-    void CalculateMovement() {
+    private void CalculateMovement() {
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
@@ -81,18 +70,24 @@ public class Player : MonoBehaviour {
         if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && isSpeedPowerUpActive == false)
             speed = shiftSpeed;
         else if (isSpeedPowerUpActive == false)
-            speed = getBaseSpeed();
+            speed = GetBaseSpeed();
         transform.Translate(direction * speed * Time.deltaTime);
 
-        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -3.6f, 0), 0);
+        //Part 1: Get it!
+        Vector3 previousPosition = transform.position;
 
-        if (transform.position.x >= 11.3f)
-            transform.position = new Vector3(-11.3f, transform.position.y, 0);
-        else if (transform.position.x <= -11.3f)
-            transform.position = new Vector3(11.3f, transform.position.y, 0);
+        //Part 2: Change it!
+        previousPosition = new Vector3(previousPosition.x, Mathf.Clamp(previousPosition.y, -3.6f, 0), 0);
+        if (previousPosition.x >= 11.3f)
+            previousPosition = new Vector3(-11.3f, previousPosition.y, 0);
+        else if (previousPosition.x <= -11.3f)
+            previousPosition = new Vector3(11.3f, previousPosition.y, 0);
+
+        //Part 3: Set it!
+        transform.position = previousPosition;
     }
 
-    void FireLaser() {
+    private void FireLaser() {
         canFire = Time.time + fireRate;
 
         if (Input.GetKeyDown(KeyCode.Space)) {
@@ -103,33 +98,47 @@ public class Player : MonoBehaviour {
             audio.Play();
         }
     }
-    #endregion
-    public void Damage() {
-        if (IsShieldPowerUpActive) {
-            currentShieldProtection--;
-            UpdateShieldColor();
-            if (currentShieldProtection <= 0)
-                ShieldPowerDown();
-        } else {
-            if (canTakeDamage) {
-                lives--;
-                Debug.Log("no shield on and minus a life");
-                uiManager.UpdateLives(lives);
-                if (lives == 2)
-                    wingDamageSprites[Random.Range(0, wingDamageSprites.Length)].enabled = true;
-                else if (lives == 1) {
-                    if (wingDamageSprites[0].enabled == true)
-                        wingDamageSprites[1].enabled = true;
-                    else wingDamageSprites[0].enabled = true;
-                }
-                else if (lives <= 0) {
-                    spawnManager.OnPlayerDeath();
-                    uiManager.GameOverSequence();
-                    Destroy(this.gameObject);
-                }
-            }
+
+    public bool TryDamage() {
+        if (IsInvincible)
+            return false;
+
+        if (IsShieldPowerUpActive)
+            TakeShieldDamage();
+        else
+            Damage();
+        return true;
+    }
+
+    private void Damage() {
+        lives--;
+        OnDamaged();
+    }
+
+    private void TakeShieldDamage() {
+        currentShieldProtection--;
+        UpdateShieldColor();
+        if (currentShieldProtection <= 0)
+            ShieldPowerDown();
+        StartInvincibility();
+    }
+
+    //NOTE: This updates both us, AND other scripts, after we take damage.
+    //This is IN RESPONSE to damage.
+    private void OnDamaged() {
+        uiManager.UpdateLives(lives);
+        if (lives == 2)
+            wingDamageSprites[Random.Range(0, wingDamageSprites.Length)].enabled = true;
+        else if (lives == 1) {
+            if (wingDamageSprites[0].enabled == true)
+                wingDamageSprites[1].enabled = true;
+            else wingDamageSprites[0].enabled = true;
+        } else if (lives <= 0) {
+            spawnManager.OnPlayerDeath();
+            uiManager.GameOverSequence();
+            Destroy(this.gameObject);
         }
-        StartCoroutine(InvincibilityRoutine());
+        StartInvincibility();
     }
 
     private void UpdateShieldColor() {
@@ -137,19 +146,18 @@ public class Player : MonoBehaviour {
         c.a = (float) currentShieldProtection / totalShieldProtection;
         shieldVisualizer.color = c;
     }
-    #region
-    private float getBaseSpeed() {
-        speed = 5f;
-        return speed;
+
+    private float GetBaseSpeed() {
+        return 5;
     }
 
     public void TripleShotPowerUpActive() {
         isTripleShotPowerUpActive = true;
         StartCoroutine(TripleShotPowerDownRoutine());
     }
-    
-    IEnumerator TripleShotPowerDownRoutine() {
-        while(isTripleShotPowerUpActive) {
+
+    private IEnumerator TripleShotPowerDownRoutine() {
+        while (isTripleShotPowerUpActive) {
             yield return new WaitForSeconds(powerUpDuration);
             isTripleShotPowerUpActive = false;
         }
@@ -162,24 +170,22 @@ public class Player : MonoBehaviour {
         StartCoroutine(SpeedPowerDownRoutine());
     }
 
-    IEnumerator SpeedPowerDownRoutine() {
-        while(isSpeedPowerUpActive) {
+    private IEnumerator SpeedPowerDownRoutine() {
+        while (isSpeedPowerUpActive) {
             yield return new WaitForSeconds(powerUpDuration);
             speed /= speedPowerUpMultiplier;
             thrusterSprite.color = Color.white;
             isSpeedPowerUpActive = false;
         }
     }
-    #endregion
+
     public void ShieldPowerUpActive() {
-        canTakeDamage = false;
         currentShieldProtection = totalShieldProtection;
         UpdateShieldColor();
         shield.SetActive(true);
     }
 
     private void ShieldPowerDown() {
-        canTakeDamage = true;
         shield.SetActive(false);
     }
 
@@ -188,11 +194,7 @@ public class Player : MonoBehaviour {
         uiManager.UpdateScore(score);
     }
 
-    private IEnumerator InvincibilityRoutine() {
-        Debug.Log("coroutine start");
-        canTakeDamage = false;
-        yield return new WaitForSeconds(2f);
-        canTakeDamage = true;
-        Debug.Log("coroutine end");
+    private void StartInvincibility() {
+        timeInvincibleUntil = Time.time + 2;
     }
 }
