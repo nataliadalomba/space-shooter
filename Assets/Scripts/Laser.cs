@@ -30,7 +30,6 @@ public class Laser : MonoBehaviour {
             if (transform.parent != null) {
                 Destroy(transform.parent.gameObject);
             }
-            Destroy(this.gameObject);
         }
     }
 
@@ -42,13 +41,18 @@ public class Laser : MonoBehaviour {
         return isEnemyLaser;
     }
 
+    //if the tag is player and it's an enemy laser
+    //set player to the player component
+    //check player is there, then TryDamage and destroy the laser
+
+    //if other is a child of the object with tag Player
     private void OnTriggerEnter2D(Collider2D other) {
-        if (other.tag == "Player" && isEnemyLaser) {
-            Player player = other.GetComponent<Player>();
+        if (isEnemyLaser) {
+            Player player = other.GetComponentInParent<Player>();
 
             if (player != null) {
                 player.TryDamage();
-                Destroy(this.gameObject);
+                Destroy(transform.parent.gameObject);
             }
         }
     }

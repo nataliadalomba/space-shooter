@@ -896,9 +896,9 @@ MonoBehaviour:
   lives: 3
   tripleShotLasersPrefab: {fileID: 4902251547736761636, guid: 4ce221b5e077a274a930119f053ca535,
     type: 3}
+  thrusterSprite: {fileID: 1002293874}
   totalShieldProtection: 3
   shield: {fileID: 1137117087}
-  thrusterSprite: {fileID: 1002293874}
 --- !u!212 &761659932
 SpriteRenderer:
   m_ObjectHideFlags: 0

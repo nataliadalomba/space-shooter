@@ -2,6 +2,7 @@
 using UnityEngine;
 
 public class Player : MonoBehaviour {
+    #region
     [Tooltip("The player's currrent speed.")]
     [SerializeField] private float speed = 5;
 
@@ -11,10 +12,11 @@ public class Player : MonoBehaviour {
     [SerializeField] private float fireRate = 0.15f;
     [SerializeField] private int lives = 3;
     [SerializeField] private GameObject tripleShotLasersPrefab;
+    [SerializeField] private SpriteRenderer thrusterSprite;
+    #endregion
     [SerializeField] private int totalShieldProtection = 3;
     [SerializeField] private GameObject shield;
-    [SerializeField] private SpriteRenderer thrusterSprite;
-
+    #region
     private float shiftSpeed = 7;
     private float speedPowerUpMultiplier = 2;
 
@@ -27,12 +29,13 @@ public class Player : MonoBehaviour {
     private bool isTripleShotPowerUpActive;
     private bool isSpeedPowerUpActive;
 
+    private int score;
+    private UIManager uiManager;
+    #endregion
+
     private int currentShieldProtection;
     private SpriteRenderer shieldVisualizer;
     private float timeInvincibleUntil = 0;
-
-    private int score;
-    private UIManager uiManager;
 
     public bool IsInvincible => Time.time <= timeInvincibleUntil;
     public bool IsShieldPowerUpActive => currentShieldProtection > 0;
@@ -60,7 +63,6 @@ public class Player : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > canFire)
             FireLaser();
     }
-    #endregion
 
     private void CalculateMovement() {
         float horizontalInput = Input.GetAxis("Horizontal");
@@ -98,6 +100,7 @@ public class Player : MonoBehaviour {
             audio.Play();
         }
     }
+    #endregion
 
     public bool TryDamage() {
         if (IsInvincible)
@@ -105,11 +108,10 @@ public class Player : MonoBehaviour {
 
         if (IsShieldPowerUpActive)
             TakeShieldDamage();
-        else
-            Damage();
+        else Damage();
         return true;
     }
-
+    
     private void Damage() {
         lives--;
         OnDamaged();
@@ -130,13 +132,14 @@ public class Player : MonoBehaviour {
         if (lives == 2)
             wingDamageSprites[Random.Range(0, wingDamageSprites.Length)].enabled = true;
         else if (lives == 1) {
-            if (wingDamageSprites[0].enabled == true)
+            if (wingDamageSprites[0].enabled)
                 wingDamageSprites[1].enabled = true;
             else wingDamageSprites[0].enabled = true;
         } else if (lives <= 0) {
             spawnManager.OnPlayerDeath();
             uiManager.GameOverSequence();
             Destroy(this.gameObject);
+            return;
         }
         StartInvincibility();
     }
@@ -146,7 +149,7 @@ public class Player : MonoBehaviour {
         c.a = (float) currentShieldProtection / totalShieldProtection;
         shieldVisualizer.color = c;
     }
-
+    #region
     private float GetBaseSpeed() {
         return 5;
     }
@@ -178,7 +181,7 @@ public class Player : MonoBehaviour {
             isSpeedPowerUpActive = false;
         }
     }
-
+    #endregion
     public void ShieldPowerUpActive() {
         currentShieldProtection = totalShieldProtection;
         UpdateShieldColor();
@@ -189,12 +192,13 @@ public class Player : MonoBehaviour {
         shield.SetActive(false);
     }
 
+    private void StartInvincibility() {
+        timeInvincibleUntil = Time.time + 2;
+    }
+    #region
     public void AddToScore(int points) {
         score += points;
         uiManager.UpdateScore(score);
     }
-
-    private void StartInvincibility() {
-        timeInvincibleUntil = Time.time + 2;
-    }
+    #endregion
 }
