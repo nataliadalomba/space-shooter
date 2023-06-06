@@ -2,17 +2,18 @@
 
 public class Laser : MonoBehaviour {
 
-    [SerializeField]
-    private float speed = 8f;
+    [SerializeField] private float speed = 8f;
+    [SerializeField] private int playerLaserCount = 15;
     private bool isEnemyLaser;
+
     
     void Update() {
         if (isEnemyLaser == false)
-            MoveUp();
-        else MoveDown();
+            PlayerLaser();
+        else EnemyLaser();
     }
 
-    void MoveUp() {
+    void PlayerLaser() {
         transform.Translate(Vector3.up * speed * Time.deltaTime);
         
         if (transform.position.y >= 8) {
@@ -23,7 +24,7 @@ public class Laser : MonoBehaviour {
         }
     }
 
-    void MoveDown() {
+    void EnemyLaser() {
         transform.Translate(Vector3.down * speed * Time.deltaTime);
 
         if (transform.position.y <= -8) {
@@ -41,11 +42,6 @@ public class Laser : MonoBehaviour {
         return isEnemyLaser;
     }
 
-    //if the tag is player and it's an enemy laser
-    //set player to the player component
-    //check player is there, then TryDamage and destroy the laser
-
-    //if other is a child of the object with tag Player
     private void OnTriggerEnter2D(Collider2D other) {
         if (isEnemyLaser) {
             Player player = other.GetComponentInParent<Player>();

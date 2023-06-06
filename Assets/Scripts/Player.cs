@@ -9,19 +9,21 @@ public class Player : MonoBehaviour {
     [SerializeField] private GameObject laserPrefab;
     [SerializeField] private SpriteRenderer[] wingDamageSprites = new SpriteRenderer[2];
     [SerializeField] private AudioClip laserClip;
+    #endregion
+    [SerializeField] private AudioClip outOfAmmoClip;
+    [SerializeField] private int laserCount = 15;
+    #region
     [SerializeField] private float fireRate = 0.15f;
     [SerializeField] private int lives = 3;
     [SerializeField] private GameObject tripleShotLasersPrefab;
     [SerializeField] private SpriteRenderer thrusterSprite;
-    #endregion
     [SerializeField] private int totalShieldProtection = 3;
     [SerializeField] private GameObject shield;
-    #region
+
     private float shiftSpeed = 7;
     private float speedPowerUpMultiplier = 2;
 
     private new AudioSource audio;
-
     private float canFire = -1;
     private SpawnManager spawnManager;
 
@@ -31,7 +33,6 @@ public class Player : MonoBehaviour {
 
     private int score;
     private UIManager uiManager;
-    #endregion
 
     private int currentShieldProtection;
     private SpriteRenderer shieldVisualizer;
@@ -40,7 +41,6 @@ public class Player : MonoBehaviour {
     public bool IsInvincible => Time.time <= timeInvincibleUntil;
     public bool IsShieldPowerUpActive => currentShieldProtection > 0;
 
-    #region Unity Messages
     private void Start() {
         transform.position = Vector3.zero;
 
@@ -88,20 +88,32 @@ public class Player : MonoBehaviour {
         //Part 3: Set it!
         transform.position = previousPosition;
     }
-
+    #endregion
     private void FireLaser() {
         canFire = Time.time + fireRate;
 
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            if (isTripleShotPowerUpActive)
+        if (Input.GetKeyDown(KeyCode.Space) && laserCount >= 1) {
+            if (isTripleShotPowerUpActive) {
                 Instantiate(tripleShotLasersPrefab, transform.position, Quaternion.identity);
-            else Instantiate(laserPrefab, transform.position + new Vector3(0, 1.075f, 0), Quaternion.identity);
+                SubtractLaserAmmo(3);
+            } else {
+                Instantiate(laserPrefab, transform.position + new Vector3(0, 1.075f, 0), Quaternion.identity);
+                SubtractLaserAmmo(1);
+            }
             audio.clip = laserClip;
             audio.Play();
         }
-    }
-    #endregion
 
+        if (Input.GetKeyDown(KeyCode.Space) && laserCount <= 0) {
+            audio.clip = outOfAmmoClip;
+            audio.Play();
+        }
+    }
+
+    public int GetPlayerLaserCount() {
+        return laserCount;
+    }
+    #region Other Methods
     public bool TryDamage() {
         if (IsInvincible)
             return false;
@@ -149,7 +161,7 @@ public class Player : MonoBehaviour {
         c.a = (float) currentShieldProtection / totalShieldProtection;
         shieldVisualizer.color = c;
     }
-    #region
+
     private float GetBaseSpeed() {
         return 5;
     }
@@ -181,7 +193,6 @@ public class Player : MonoBehaviour {
             isSpeedPowerUpActive = false;
         }
     }
-    #endregion
     public void ShieldPowerUpActive() {
         currentShieldProtection = totalShieldProtection;
         UpdateShieldColor();
@@ -195,10 +206,14 @@ public class Player : MonoBehaviour {
     private void StartInvincibility() {
         timeInvincibleUntil = Time.time + 2;
     }
-    #region
+    #endregion
     public void AddToScore(int points) {
         score += points;
         uiManager.UpdateScore(score);
     }
-    #endregion
+
+    public void SubtractLaserAmmo(int subtractLasers) {
+        laserCount -= subtractLasers;
+        uiManager.UpdateLaserCount(laserCount);
+    }
 }
