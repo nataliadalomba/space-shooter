@@ -2,17 +2,14 @@
 using UnityEngine;
 
 public class Player : MonoBehaviour {
-    #region
     [Tooltip("The player's currrent speed.")]
     [SerializeField] private float speed = 5;
 
     [SerializeField] private GameObject laserPrefab;
     [SerializeField] private SpriteRenderer[] wingDamageSprites = new SpriteRenderer[2];
     [SerializeField] private AudioClip laserClip;
-    #endregion
     [SerializeField] private AudioClip outOfAmmoClip;
     [SerializeField] private int laserCount = 15;
-    #region
     [SerializeField] private float fireRate = 0.15f;
     [SerializeField] private int lives = 3;
     [SerializeField] private GameObject tripleShotLasersPrefab;
@@ -88,7 +85,7 @@ public class Player : MonoBehaviour {
         //Part 3: Set it!
         transform.position = previousPosition;
     }
-    #endregion
+
     private void FireLaser() {
         canFire = Time.time + fireRate;
 
@@ -110,10 +107,15 @@ public class Player : MonoBehaviour {
         }
     }
 
-    public int GetPlayerLaserCount() {
+    public int GetLaserCount() {
         return laserCount;
     }
-    #region Other Methods
+
+    public void SubtractLaserAmmo(int subtractLasers) {
+        laserCount -= subtractLasers;
+        uiManager.UpdateLaserCount(laserCount);
+    }
+
     public bool TryDamage() {
         if (IsInvincible)
             return false;
@@ -206,14 +208,8 @@ public class Player : MonoBehaviour {
     private void StartInvincibility() {
         timeInvincibleUntil = Time.time + 2;
     }
-    #endregion
     public void AddToScore(int points) {
         score += points;
         uiManager.UpdateScore(score);
-    }
-
-    public void SubtractLaserAmmo(int subtractLasers) {
-        laserCount -= subtractLasers;
-        uiManager.UpdateLaserCount(laserCount);
     }
 }

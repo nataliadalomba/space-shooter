@@ -3,7 +3,6 @@
 public class Laser : MonoBehaviour {
 
     [SerializeField] private float speed = 8f;
-    [SerializeField] private int playerLaserCount = 15;
     private bool isEnemyLaser;
 
     
