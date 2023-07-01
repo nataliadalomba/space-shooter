@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class PowerUp : MonoBehaviour {
 
-    [SerializeField]
-    private float speed = 3.0f;
-    [SerializeField] //0 = Triple Shot, 1 = Speed, 2 = Shield
-    private int powerUpID;
-    [SerializeField]
-    private AudioClip clip;
+    [SerializeField] private float speed = 3.0f;
+    //0 = Triple Shot, 1 = Speed, 2 = Shield
+    [SerializeField] private int powerUpID;
+    [SerializeField] private AudioClip clip;
 
     void Update() {
         transform.Translate(Vector3.down * speed * Time.deltaTime);

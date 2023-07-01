@@ -8,10 +8,8 @@ public class AmmoCollectable : Collectable {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
-    public void AddAmmo() {
-        player.AddLaserCount(10);
-        Debug.Log("added 10 ammo");
-
+    protected void AddAmmo() {
+        player.AddLaserCount(5);
     }
 
     protected override void OnPickUp(Player player) {
