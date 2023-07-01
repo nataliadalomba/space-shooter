@@ -111,6 +111,11 @@ public class Player : MonoBehaviour {
         return laserCount;
     }
 
+    public void AddLaserCount(int count) {
+        laserCount += count;
+        uiManager.UpdateLaserCount(laserCount);
+    }
+
     public void SubtractLaserAmmo(int subtractLasers) {
         laserCount -= subtractLasers;
         uiManager.UpdateLaserCount(laserCount);
