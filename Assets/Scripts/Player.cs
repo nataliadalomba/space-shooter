@@ -163,6 +163,7 @@ public class Player : MonoBehaviour {
             return;
         }
         StartInvincibility();
+
     }
 
     public void AddHealth() {
