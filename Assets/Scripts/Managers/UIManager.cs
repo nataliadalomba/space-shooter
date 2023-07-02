@@ -21,8 +21,8 @@ public class UIManager : MonoBehaviour {
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         scoreText.text = "Score: " + 0;
 
-        laserCount.text = player.GetLaserCount().ToString();
-        laserCountAnim.SetInteger("Laser Count", player.GetLaserCount());
+        laserCount.text = player.GetAmmoCount().ToString();
+        laserCountAnim.SetInteger("Laser Count", player.GetAmmoCount());
         gameOverText.enabled = false;
         restartGameText.enabled = false;
 
@@ -32,15 +32,15 @@ public class UIManager : MonoBehaviour {
             Debug.Log("The game manager is null.");
     }
 
-    public void UpdateLaserCount(int lasers) {
+    public void UpdateAmmoCount(int lasers) {
         laserCount.text = lasers.ToString();
-        laserCountAnim.SetInteger("Laser Count", player.GetLaserCount());
+        laserCountAnim.SetInteger("Laser Count", player.GetAmmoCount());
     }
     public void UpdateScore(int playerScore) {
         scoreText.text = "Score: " + playerScore.ToString();
     }
 
-    public void UpdateLives(int currentLives) {
+    public void UpdateHealth(int currentLives) {
         if (currentLives < 0)
             currentLives = 0;
         lifeImage.sprite = lifeSprites[currentLives];

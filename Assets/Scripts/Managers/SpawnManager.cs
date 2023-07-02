@@ -45,7 +45,7 @@ public class SpawnManager : MonoBehaviour {
             WaitForSeconds waitRandom = new WaitForSeconds(Random.Range(7f, 15f));
             yield return waitRandom;
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 8.5f, 0);
-            int randomCollectable = Random.Range(0, collectables.Length - 1);
+            int randomCollectable = Random.Range(0, collectables.Length);
             Instantiate(collectables[randomCollectable], posToSpawn, Quaternion.identity);
         }
     }

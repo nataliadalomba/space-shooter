@@ -12,12 +12,10 @@ public class Collectable : MonoBehaviour {
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
-        if(other.tag == "Player") {
-            Player player = other.GetComponent<Player>();
-            if (player != null) {
-                AudioSource.PlayClipAtPoint(clip, transform.position);
-                OnPickUp(player);
-            }
+        Player player = other.GetComponent<Player>();
+        if (player != null) {
+            AudioSource.PlayClipAtPoint(clip, transform.position);
+            OnPickUp(player);
             Destroy(gameObject);
         }
     }

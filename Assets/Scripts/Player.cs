@@ -9,9 +9,9 @@ public class Player : MonoBehaviour {
     [SerializeField] private SpriteRenderer[] wingDamageSprites = new SpriteRenderer[2];
     [SerializeField] private AudioClip laserClip;
     [SerializeField] private AudioClip outOfAmmoClip;
-    [SerializeField] private int laserCount = 15;
+    [SerializeField] private int ammoCount = 15;
     [SerializeField] private float fireRate = 0.15f;
-    [SerializeField] private int lives = 3;
+    [SerializeField] private int health = 3;
     [SerializeField] private GameObject tripleShotLasersPrefab;
     [SerializeField] private SpriteRenderer thrusterSprite;
     [SerializeField] private int totalShieldProtection = 3;
@@ -89,36 +89,38 @@ public class Player : MonoBehaviour {
     private void FireLaser() {
         canFire = Time.time + fireRate;
 
-        if (Input.GetKeyDown(KeyCode.Space) && laserCount >= 1) {
+        if (Input.GetKeyDown(KeyCode.Space) && ammoCount >= 1) {
             if (isTripleShotPowerUpActive) {
                 Instantiate(tripleShotLasersPrefab, transform.position, Quaternion.identity);
-                SubtractLaserAmmo(3);
+                SubtractAmmo(3);
             } else {
                 Instantiate(laserPrefab, transform.position + new Vector3(0, 1.075f, 0), Quaternion.identity);
-                SubtractLaserAmmo(1);
+                SubtractAmmo(1);
             }
             audio.clip = laserClip;
             audio.Play();
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && laserCount <= 0) {
+        if (Input.GetKeyDown(KeyCode.Space) && ammoCount <= 0) {
             audio.clip = outOfAmmoClip;
             audio.Play();
         }
     }
 
-    public int GetLaserCount() {
-        return laserCount;
+    public int GetAmmoCount() {
+        return ammoCount;
     }
 
-    public void AddLaserCount(int count) {
-        laserCount += count;
-        uiManager.UpdateLaserCount(laserCount);
+    public void AddAmmoCount(int count) {
+        ammoCount += count;
+        uiManager.UpdateAmmoCount(ammoCount);
     }
 
-    public void SubtractLaserAmmo(int subtractLasers) {
-        laserCount -= subtractLasers;
-        uiManager.UpdateLaserCount(laserCount);
+    public void SubtractAmmo(int ammo) {
+        ammoCount -= ammo;
+        if (ammoCount < 0)
+            ammoCount = 0;
+        uiManager.UpdateAmmoCount(ammoCount);
     }
 
     public bool TryDamage() {
@@ -132,7 +134,7 @@ public class Player : MonoBehaviour {
     }
     
     private void Damage() {
-        lives--;
+        health--;
         OnDamaged();
     }
 
@@ -147,20 +149,30 @@ public class Player : MonoBehaviour {
     //NOTE: This updates both us, AND other scripts, after we take damage.
     //This is IN RESPONSE to damage.
     private void OnDamaged() {
-        uiManager.UpdateLives(lives);
-        if (lives == 2)
+        uiManager.UpdateHealth(health);
+        if (health == 2)
             wingDamageSprites[Random.Range(0, wingDamageSprites.Length)].enabled = true;
-        else if (lives == 1) {
+        else if (health == 1) {
             if (wingDamageSprites[0].enabled)
                 wingDamageSprites[1].enabled = true;
             else wingDamageSprites[0].enabled = true;
-        } else if (lives <= 0) {
+        } else if (health <= 0) {
             spawnManager.OnPlayerDeath();
             uiManager.GameOverSequence();
             Destroy(this.gameObject);
             return;
         }
         StartInvincibility();
+    }
+
+    public void AddHealth() {
+        if (health == 1 || health == 2) {
+            health++;
+            uiManager.UpdateHealth(health);
+            if (wingDamageSprites[0].enabled)
+                wingDamageSprites[0].enabled = false;
+            else wingDamageSprites[1].enabled = false;
+        }
     }
 
     private void UpdateShieldColor() {
@@ -213,6 +225,7 @@ public class Player : MonoBehaviour {
     private void StartInvincibility() {
         timeInvincibleUntil = Time.time + 2;
     }
+
     public void AddToScore(int points) {
         score += points;
         uiManager.UpdateScore(score);
