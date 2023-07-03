@@ -23,7 +23,8 @@ public class SpawnManager : MonoBehaviour {
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 8.5f, 0);
             GameObject newEnemy = Instantiate(enemyPrefab, posToSpawn, Quaternion.identity);
             newEnemy.transform.parent = enemyContainer.transform;
-            yield return new WaitForSeconds(5.0f);
+            WaitForSeconds wait5Secs = new WaitForSeconds(5.0f);
+            yield return wait5Secs;
         }
     }
 
@@ -31,9 +32,10 @@ public class SpawnManager : MonoBehaviour {
         WaitForSeconds wait = new WaitForSeconds(3);
         yield return wait;
         while (spawning) {
-            yield return new WaitForSeconds(Random.Range(7f, 15f));
+            WaitForSeconds waitRandom = new WaitForSeconds(Random.Range(7f, 15f));
+            yield return waitRandom;
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 8.5f, 0);
-            int randomPowerUp = Random.Range(0, powerUps.Length - 1);
+            int randomPowerUp = Random.Range(0, powerUps.Length);
             Instantiate(powerUps[randomPowerUp], posToSpawn, Quaternion.identity);
         }
     }

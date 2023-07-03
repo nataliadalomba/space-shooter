@@ -21,31 +21,31 @@ AnimationClip:
   - curve:
     - time: 0
       value: {fileID: 21300000, guid: b3c18c25e6b7b9c42a70013f15669e1b, type: 3}
-    - time: 0.1
+    - time: 0.06666667
       value: {fileID: 21300000, guid: b5c3f9c62935bbf478debe6d27cc71dc, type: 3}
-    - time: 0.2
+    - time: 0.13333334
       value: {fileID: 21300000, guid: 7f2e39f1b67eb584c9b3c7c0f0d285ce, type: 3}
-    - time: 0.3
+    - time: 0.2
       value: {fileID: 21300000, guid: d3a303d7bb8c28144b5acfd5f142b128, type: 3}
-    - time: 0.4
+    - time: 0.26666668
       value: {fileID: 21300000, guid: ea0db38d819296d438ff6c917a6d8186, type: 3}
-    - time: 0.5
+    - time: 0.33333334
       value: {fileID: 21300000, guid: 2df1639dd270b794d97da6ee493142f4, type: 3}
-    - time: 0.6
+    - time: 0.4
       value: {fileID: 21300000, guid: bca7eabf9aa90014ebad08d2822d42f2, type: 3}
-    - time: 0.7
+    - time: 0.46666667
       value: {fileID: 21300000, guid: 750aa8328b32d5a4ab25bb8688e5830b, type: 3}
-    - time: 0.8
+    - time: 0.53333336
       value: {fileID: 21300000, guid: 78c6202f1fa9f024db6a864230ff4df0, type: 3}
-    - time: 0.9
+    - time: 0.6
       value: {fileID: 21300000, guid: 36aae923893bb8a4dae6fc558216cdb1, type: 3}
-    - time: 1
+    - time: 0.6666667
       value: {fileID: 21300000, guid: cbeb69d58669d8446af9c4b4de5ce6fb, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
     script: {fileID: 0}
-  m_SampleRate: 10
+  m_SampleRate: 15
   m_WrapMode: 0
   m_Bounds:
     m_Center: {x: 0, y: 0, z: 0}
@@ -76,7 +76,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 1.1
+    m_StopTime: 0.73333335
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0

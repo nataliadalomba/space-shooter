@@ -5,7 +5,7 @@ using UnityEngine;
 public class PowerUp : MonoBehaviour {
 
     [SerializeField] private float speed = 3.0f;
-    //0 = Triple Shot, 1 = Speed, 2 = Shield
+    //0 = Triple Shot, 1 = Speed, 2 = Shield, 3 = Wave
     [SerializeField] private int powerUpID;
     [SerializeField] private AudioClip clip;
 
@@ -30,6 +30,9 @@ public class PowerUp : MonoBehaviour {
                         break;
                     case 2:
                         player.ShieldPowerUpActive();
+                        break;
+                    case 3:
+                        player.WavePowerUpActive();
                         break;
                     default:
                         Debug.Log("Invalid PowerUp ID.");

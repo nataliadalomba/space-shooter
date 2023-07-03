@@ -8,6 +8,7 @@ TagManager:
   - Laser
   - Spawn Manager
   - Ammo
+  - Wave
   layers:
   - Default
   - TransparentFX

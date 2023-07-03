@@ -56,7 +56,7 @@ public class Enemy : MonoBehaviour {
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
-        if (other.tag == "Player") {
+        if (other.tag == "Player" || other.tag == "Wave") {
             player.TryDamage();
             anim.SetTrigger("OnEnemyDeath");
             speed = 0;
@@ -81,7 +81,6 @@ public class Enemy : MonoBehaviour {
                 isAlive = false;
                 Destroy(this.gameObject, 3);
             }
-
         }
     }
 }

@@ -16,6 +16,7 @@ public class Player : MonoBehaviour {
     [SerializeField] private SpriteRenderer thrusterSprite;
     [SerializeField] private int totalShieldProtection = 3;
     [SerializeField] private GameObject shield;
+    [SerializeField] private GameObject wave;
 
     private float shiftSpeed = 7;
     private float speedPowerUpMultiplier = 2;
@@ -24,9 +25,9 @@ public class Player : MonoBehaviour {
     private float canFire = -1;
     private SpawnManager spawnManager;
 
-    private float powerUpDuration = 5;
     private bool isTripleShotPowerUpActive;
     private bool isSpeedPowerUpActive;
+    private bool isWavePowerUpActive;
 
     private int score;
     private UIManager uiManager;
@@ -34,6 +35,8 @@ public class Player : MonoBehaviour {
     private int currentShieldProtection;
     private SpriteRenderer shieldVisualizer;
     private float timeInvincibleUntil = 0;
+
+    WaitForSeconds wait = new WaitForSeconds(5);
 
     public bool IsInvincible => Time.time <= timeInvincibleUntil;
     public bool IsShieldPowerUpActive => currentShieldProtection > 0;
@@ -143,7 +146,7 @@ public class Player : MonoBehaviour {
         UpdateShieldColor();
         if (currentShieldProtection <= 0)
             ShieldPowerDown();
-        StartInvincibility();
+        StartInvincibility(2);
     }
 
     //NOTE: This updates both us, AND other scripts, after we take damage.
@@ -162,7 +165,7 @@ public class Player : MonoBehaviour {
             Destroy(this.gameObject);
             return;
         }
-        StartInvincibility();
+        StartInvincibility(2);
     }
 
     public void AddHealth() {
@@ -175,24 +178,18 @@ public class Player : MonoBehaviour {
         }
     }
 
-    private void UpdateShieldColor() {
-        Color c = shieldVisualizer.color;
-        c.a = (float) currentShieldProtection / totalShieldProtection;
-        shieldVisualizer.color = c;
-    }
-
     private float GetBaseSpeed() {
         return 5;
     }
 
     public void TripleShotPowerUpActive() {
         isTripleShotPowerUpActive = true;
-        StartCoroutine(TripleShotPowerDownRoutine());
+        StartCoroutine(TripleShotPowerDownCoroutine());
     }
 
-    private IEnumerator TripleShotPowerDownRoutine() {
+    private IEnumerator TripleShotPowerDownCoroutine() {
         while (isTripleShotPowerUpActive) {
-            yield return new WaitForSeconds(powerUpDuration);
+            yield return wait;
             isTripleShotPowerUpActive = false;
         }
     }
@@ -201,17 +198,24 @@ public class Player : MonoBehaviour {
         isSpeedPowerUpActive = true;
         speed *= speedPowerUpMultiplier;
         thrusterSprite.color = Color.cyan;
-        StartCoroutine(SpeedPowerDownRoutine());
+        StartCoroutine(SpeedPowerDownCoroutine());
     }
 
-    private IEnumerator SpeedPowerDownRoutine() {
+    private IEnumerator SpeedPowerDownCoroutine() {
         while (isSpeedPowerUpActive) {
-            yield return new WaitForSeconds(powerUpDuration);
+            yield return wait;
             speed /= speedPowerUpMultiplier;
             thrusterSprite.color = Color.white;
             isSpeedPowerUpActive = false;
         }
     }
+
+    private void UpdateShieldColor() {
+        Color c = shieldVisualizer.color;
+        c.a = (float) currentShieldProtection / totalShieldProtection;
+        shieldVisualizer.color = c;
+    }
+
     public void ShieldPowerUpActive() {
         currentShieldProtection = totalShieldProtection;
         UpdateShieldColor();
@@ -222,8 +226,23 @@ public class Player : MonoBehaviour {
         shield.SetActive(false);
     }
 
-    private void StartInvincibility() {
-        timeInvincibleUntil = Time.time + 2;
+    public void WavePowerUpActive() {
+        isWavePowerUpActive = true;
+        StartInvincibility(5);
+        wave.SetActive(true);
+        StartCoroutine(WavePowerDownCoroutine());
+    }
+
+    private IEnumerator WavePowerDownCoroutine() {
+        while (isWavePowerUpActive) {
+            yield return wait;
+            wave.SetActive(false);
+            isWavePowerUpActive = false;
+        }
+    }
+
+    public void StartInvincibility(int seconds) {
+        timeInvincibleUntil = Time.time + seconds;
     }
 
     public void AddToScore(int points) {
