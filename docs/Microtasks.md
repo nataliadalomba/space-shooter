@@ -19,7 +19,7 @@ namespace MarksAdventure {
 }
 ```
 
-![Spawn Controller Example 1](space-shooter/docs/images/Spawn Controller Example 1.png)
+![Spawn Controller Example 1](./docs/images/Spawn%Controller%Example%1.png)
 
 ```cs
 using System;
@@ -47,7 +47,7 @@ namespace MarksAdventure {
 }
 ```
 
-![Spawn Controller Example 2](/docs/images/Spawn Controller Example 2.png)
+![Spawn Controller Example 2](./docs/images/Spawn%Controller%Example%2.png)
 
 Implement the above example to have the Wave PowerUp spawn more rarely than the existing power ups. This is the last of the Wave PowerUp feature.
 
