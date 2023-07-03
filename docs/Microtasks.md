@@ -1,3 +1,5 @@
+# 🔍 Microtasks
+
 ```cs
 using System;
 using UnityEngine;
@@ -19,7 +21,7 @@ namespace MarksAdventure {
 }
 ```
 
-![Spawn Controller Example 1](./docs/images/Spawn%Controller%Example%1.png)
+![Spawn Controller Example 1](/docs/images/Spawn%20Controller%20Example%201.png)
 
 ```cs
 using System;
@@ -47,13 +49,9 @@ namespace MarksAdventure {
 }
 ```
 
-![Spawn Controller Example 2](./docs/images/Spawn%Controller%Example%2.png)
+![Spawn Controller Example 2](/docs/images/Spawn%20Controller%20Example%202.png)
 
 Implement the above example to have the Wave PowerUp spawn more rarely than the existing power ups. This is the last of the Wave PowerUp feature.
-
-<br />
-
-Create final animated sprite for Wave PowerUp Collectable
 
 <br />
 
