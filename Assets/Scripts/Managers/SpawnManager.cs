@@ -1,7 +1,15 @@
-﻿using System.Collections;
+﻿using JetBrains.Annotations;
+using System.Collections;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour {
+    [System.Serializable]
+    private struct SpawnInfo {
+        public GameObject prefab;
+
+        public float minSpawnTime;
+        public float maxSpawnTime;
+    }
 
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private GameObject enemyContainer;
