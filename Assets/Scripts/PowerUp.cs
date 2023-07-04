@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PowerUp : MonoBehaviour {
 
-    [SerializeField] private float speed = 3.0f;
+    [SerializeField] private float speed = 3f;
     //0 = Triple Shot, 1 = Speed, 2 = Shield, 3 = Wave
     [SerializeField] private int powerUpID;
     [SerializeField] private AudioClip clip;

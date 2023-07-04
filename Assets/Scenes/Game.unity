@@ -728,17 +728,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 790e49b4e2a441a4080509e043cbcaed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 681606469347654121, guid: 25b60eaa063fbda46be7b80a24b37d0a,
-    type: 3}
-  enemyContainer: {fileID: 254611965}
-  powerUps:
-  - {fileID: 3966622685404085785, guid: 123c374cb90dfd64b98cfdda7952611e, type: 3}
-  - {fileID: 4317743881545920399, guid: 7eed9d58f4c11de4a91bc81850b05a75, type: 3}
-  - {fileID: 2383678820783955658, guid: fe1f84313402f004083e322caa88df56, type: 3}
-  - {fileID: 5557833226443548484, guid: 7c0c8c1dd22e14042b3bd73ea6f107d8, type: 3}
-  collectables:
-  - {fileID: 1499337340448811697, guid: b354b42f585f21c4987123e188239c2f, type: 3}
-  - {fileID: 7283101229590858396, guid: 4b30b2379c84d8541b7a381512966d6d, type: 3}
+  PowerUps:
+  - prefab: {fileID: 0}
+    minSpawnTime: 7
+    maxSpawnTime: 15
+  enemyPrefab: {fileID: 0}
+  enemyContainer: {fileID: 0}
+  powerUps: []
+  provisions: []
 --- !u!4 &400336562
 Transform:
   m_ObjectHideFlags: 0

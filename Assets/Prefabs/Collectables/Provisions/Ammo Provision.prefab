@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1169664621}
   - component: {fileID: 1169664620}
   m_Layer: 0
-  m_Name: Ammo Collectable
+  m_Name: Ammo Provision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

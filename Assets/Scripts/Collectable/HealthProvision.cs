@@ -1,4 +1,4 @@
-﻿public class HealthCollectable : Collectable {
+﻿public class HealthProvision : Collectable {
 
     protected override void OnPickUp(Player player) {
         player.AddHealth();

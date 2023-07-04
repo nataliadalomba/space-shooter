@@ -1,5 +1,4 @@
-﻿using JetBrains.Annotations;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour {
@@ -11,17 +10,32 @@ public class SpawnManager : MonoBehaviour {
         public float maxSpawnTime;
     }
 
+    [SerializeField] private SpawnInfo[] powerUps = {
+        new SpawnInfo {
+            minSpawnTime = 7,
+            maxSpawnTime = 15
+        }
+    };
+
+    [SerializeField] private SpawnInfo[] provisions = {
+        new SpawnInfo {
+            minSpawnTime = 5,
+            maxSpawnTime = 14
+        }
+    };
+
+    [Space(20)]
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private GameObject enemyContainer;
-    [SerializeField] private GameObject[] powerUps;
-    [SerializeField] private GameObject[] collectables;
+    //[SerializeField] private GameObject[] powerUps;
+    //[SerializeField] private GameObject[] provisions;
 
     private bool spawning = true;
 
     public void StartSpawning() {
         StartCoroutine(SpawnEnemyCoroutine());
         StartCoroutine(SpawnPowerUpCoroutine());
-        StartCoroutine(SpawnCollectableCoroutine());
+        StartCoroutine(SpawnProvisionCoroutine());
     }
 
     IEnumerator SpawnEnemyCoroutine() {
@@ -40,7 +54,7 @@ public class SpawnManager : MonoBehaviour {
         WaitForSeconds wait = new WaitForSeconds(3);
         yield return wait;
         while (spawning) {
-            WaitForSeconds waitRandom = new WaitForSeconds(Random.Range(7f, 15f));
+            WaitForSeconds waitRandom = new WaitForSeconds(Random.Range(0.5f, 1f));
             yield return waitRandom;
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 8.5f, 0);
             int randomPowerUp = Random.Range(0, powerUps.Length);
@@ -48,15 +62,15 @@ public class SpawnManager : MonoBehaviour {
         }
     }
 
-    IEnumerator SpawnCollectableCoroutine() {
+    IEnumerator SpawnProvisionCoroutine() {
         WaitForSeconds wait = new WaitForSeconds(3);
         yield return wait;
         while (spawning) {
             WaitForSeconds waitRandom = new WaitForSeconds(Random.Range(7f, 15f));
             yield return waitRandom;
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 8.5f, 0);
-            int randomCollectable = Random.Range(0, collectables.Length);
-            Instantiate(collectables[randomCollectable], posToSpawn, Quaternion.identity);
+            int randProvision = Random.Range(0, provisions.Length);
+            Instantiate(provisions[randProvision], posToSpawn, Quaternion.identity);
         }
     }
 
