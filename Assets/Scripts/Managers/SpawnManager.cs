@@ -16,11 +16,12 @@ public class SpawnManager : MonoBehaviour {
             maxSpawnTime = 15
         }
     };
-
+    
+    [Space(20)]
     [SerializeField] private SpawnInfo[] provisions = {
         new SpawnInfo {
-            minSpawnTime = 5,
-            maxSpawnTime = 14
+        minSpawnTime = 5,
+        maxSpawnTime = 14
         }
     };
 
@@ -54,11 +55,12 @@ public class SpawnManager : MonoBehaviour {
         WaitForSeconds wait = new WaitForSeconds(3);
         yield return wait;
         while (spawning) {
-            WaitForSeconds waitRandom = new WaitForSeconds(Random.Range(0.5f, 1f));
+            int randPowerUp = Random.Range(0, powerUps.Length);
+            WaitForSeconds waitRandom = new WaitForSeconds(Random.Range(powerUps[randPowerUp].minSpawnTime,
+                powerUps[randPowerUp].maxSpawnTime + 1));
             yield return waitRandom;
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 8.5f, 0);
-            int randomPowerUp = Random.Range(0, powerUps.Length);
-            Instantiate(powerUps[randomPowerUp], posToSpawn, Quaternion.identity);
+            Instantiate(powerUps[randPowerUp].prefab, posToSpawn, Quaternion.identity);
         }
     }
 
@@ -66,11 +68,12 @@ public class SpawnManager : MonoBehaviour {
         WaitForSeconds wait = new WaitForSeconds(3);
         yield return wait;
         while (spawning) {
-            WaitForSeconds waitRandom = new WaitForSeconds(Random.Range(7f, 15f));
+            int randProvision = Random.Range(0, provisions.Length);
+            WaitForSeconds waitRandom = new WaitForSeconds(Random.Range(provisions[randProvision].minSpawnTime,
+                provisions[randProvision].maxSpawnTime + 1));
             yield return waitRandom;
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 8.5f, 0);
-            int randProvision = Random.Range(0, provisions.Length);
-            Instantiate(provisions[randProvision], posToSpawn, Quaternion.identity);
+            Instantiate(provisions[randProvision].prefab, posToSpawn, Quaternion.identity);
         }
     }
 

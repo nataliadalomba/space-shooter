@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 5557833226443548495}
   - component: {fileID: 5557833226443548488}
   - component: {fileID: 5557833226443548489}
-  - component: {fileID: 5557833226443548490}
   - component: {fileID: 5557833226443548491}
+  - component: {fileID: 144781932401414500}
   m_Layer: 0
   m_Name: Wave PowerUp
   m_TagString: Untagged
@@ -119,7 +119,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.030453563, y: 0.00000023841858}
+  m_Offset: {x: 0.00000023841858, y: -0.0071901083}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -130,23 +130,8 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.3792112, y: 2.683743}
+  m_Size: {x: 0.97828627, y: 0.99266696}
   m_EdgeRadius: 0
---- !u!114 &5557833226443548490
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5557833226443548484}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83c36b6e2325cc248bbb7d4bff30bec3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 3
-  powerUpID: 3
-  clip: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
 --- !u!95 &5557833226443548491
 Animator:
   serializedVersion: 3
@@ -166,3 +151,17 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &144781932401414500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5557833226443548484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c25c0374179311f44be29ae5783123ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 3
+  clip: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}

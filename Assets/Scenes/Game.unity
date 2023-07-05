@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748171, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -728,14 +728,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 790e49b4e2a441a4080509e043cbcaed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PowerUps:
-  - prefab: {fileID: 0}
+  powerUps:
+  - prefab: {fileID: 2383678820783955658, guid: fe1f84313402f004083e322caa88df56,
+      type: 3}
     minSpawnTime: 7
     maxSpawnTime: 15
-  enemyPrefab: {fileID: 0}
-  enemyContainer: {fileID: 0}
-  powerUps: []
-  provisions: []
+  - prefab: {fileID: 4317743881545920399, guid: 7eed9d58f4c11de4a91bc81850b05a75,
+      type: 3}
+    minSpawnTime: 7
+    maxSpawnTime: 15
+  - prefab: {fileID: 3966622685404085785, guid: 123c374cb90dfd64b98cfdda7952611e,
+      type: 3}
+    minSpawnTime: 7
+    maxSpawnTime: 15
+  - prefab: {fileID: 5557833226443548484, guid: 7c0c8c1dd22e14042b3bd73ea6f107d8,
+      type: 3}
+    minSpawnTime: 20
+    maxSpawnTime: 30
+  provisions:
+  - prefab: {fileID: 1499337340448811697, guid: b354b42f585f21c4987123e188239c2f,
+      type: 3}
+    minSpawnTime: 5
+    maxSpawnTime: 14
+  - prefab: {fileID: 7283101229590858396, guid: 4b30b2379c84d8541b7a381512966d6d,
+      type: 3}
+    minSpawnTime: 20
+    maxSpawnTime: 30
+  enemyPrefab: {fileID: 681606469347654121, guid: 25b60eaa063fbda46be7b80a24b37d0a,
+    type: 3}
+  enemyContainer: {fileID: 254611965}
 --- !u!4 &400336562
 Transform:
   m_ObjectHideFlags: 0
@@ -1278,11 +1299,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Shield PowerUp
-      objectReference: {fileID: 0}
-    - target: {fileID: 3922572707049939587, guid: fe1f84313402f004083e322caa88df56,
-        type: 3}
-      propertyPath: speed
-      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe1f84313402f004083e322caa88df56, type: 3}
@@ -2656,41 +2672,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wave PowerUp
       objectReference: {fileID: 0}
-    - target: {fileID: 5557833226443548489, guid: 7c0c8c1dd22e14042b3bd73ea6f107d8,
-        type: 3}
-      propertyPath: m_Size.x
-      value: 0.97828627
-      objectReference: {fileID: 0}
-    - target: {fileID: 5557833226443548489, guid: 7c0c8c1dd22e14042b3bd73ea6f107d8,
-        type: 3}
-      propertyPath: m_Size.y
-      value: 0.99266696
-      objectReference: {fileID: 0}
-    - target: {fileID: 5557833226443548489, guid: 7c0c8c1dd22e14042b3bd73ea6f107d8,
-        type: 3}
-      propertyPath: m_Offset.x
-      value: 0.00000023841858
-      objectReference: {fileID: 0}
-    - target: {fileID: 5557833226443548489, guid: 7c0c8c1dd22e14042b3bd73ea6f107d8,
-        type: 3}
-      propertyPath: m_Offset.y
-      value: -0.0071901083
-      objectReference: {fileID: 0}
-    - target: {fileID: 5557833226443548490, guid: 7c0c8c1dd22e14042b3bd73ea6f107d8,
-        type: 3}
-      propertyPath: speed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5557833226443548491, guid: 7c0c8c1dd22e14042b3bd73ea6f107d8,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5557833226443548491, guid: 7c0c8c1dd22e14042b3bd73ea6f107d8,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: a977df0a475eefa478ebcfce945e4989, type: 2}
     - target: {fileID: 5557833226443548494, guid: 7c0c8c1dd22e14042b3bd73ea6f107d8,
         type: 3}
       propertyPath: m_RootOrder
@@ -2745,27 +2726,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5557833226443548495, guid: 7c0c8c1dd22e14042b3bd73ea6f107d8,
-        type: 3}
-      propertyPath: m_Size.x
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5557833226443548495, guid: 7c0c8c1dd22e14042b3bd73ea6f107d8,
-        type: 3}
-      propertyPath: m_Size.y
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5557833226443548495, guid: 7c0c8c1dd22e14042b3bd73ea6f107d8,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 161a1c4c26d543e468e0012dc5173b0f,
-        type: 3}
-    - target: {fileID: 5557833226443548495, guid: 7c0c8c1dd22e14042b3bd73ea6f107d8,
-        type: 3}
-      propertyPath: m_WasSpriteAssigned
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c0c8c1dd22e14042b3bd73ea6f107d8, type: 3}

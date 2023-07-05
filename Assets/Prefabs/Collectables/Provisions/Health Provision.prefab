@@ -163,6 +163,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ec91d98439190240b9130bed85b08ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0
+  speed: 3
   clip: {fileID: 8300000, guid: e633c0b407eff99409448eecfae05bb9, type: 3}
-  player: {fileID: 0}

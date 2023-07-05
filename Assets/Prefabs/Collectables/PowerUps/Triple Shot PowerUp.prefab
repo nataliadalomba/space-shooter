@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 6669640317297478646}
   - component: {fileID: 723957435342853179}
   - component: {fileID: 45046313234337531}
-  - component: {fileID: 8087199718197292987}
   - component: {fileID: 1003145604}
+  - component: {fileID: 3570730084037445345}
   m_Layer: 0
   m_Name: Triple Shot PowerUp
   m_TagString: Untagged
@@ -132,21 +132,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 5.12, y: 5.12}
   m_EdgeRadius: 0
---- !u!114 &8087199718197292987
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3966622685404085785}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83c36b6e2325cc248bbb7d4bff30bec3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 3
-  powerUpID: 0
-  clip: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
 --- !u!95 &1003145604
 Animator:
   serializedVersion: 3
@@ -157,7 +142,7 @@ Animator:
   m_GameObject: {fileID: 3966622685404085785}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 5c31989aa2b3b0a4f9f07e9240e79519, type: 2}
+  m_Controller: {fileID: 9100000, guid: e3658800e454be444af5e0f243aa8e1e, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -166,3 +151,17 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &3570730084037445345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3966622685404085785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58433504adc047e4491aa96b1bd92263, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 3
+  clip: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
