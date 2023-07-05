@@ -28,8 +28,6 @@ public class SpawnManager : MonoBehaviour {
     [Space(20)]
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private GameObject enemyContainer;
-    //[SerializeField] private GameObject[] powerUps;
-    //[SerializeField] private GameObject[] provisions;
 
     private bool spawning = true;
 
