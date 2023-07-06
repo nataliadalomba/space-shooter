@@ -12,7 +12,8 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private Sprite[] lifeSprites;
     [SerializeField] private TMP_Text laserCount;
     [SerializeField] private Animator laserCountAnim;
-
+    [SerializeField] private Slider thrusterSlider;
+    
     private GameManager gameManager;
     private Player player;
 
@@ -30,6 +31,8 @@ public class UIManager : MonoBehaviour {
             Debug.LogError("The player is null.");
         if (gameManager == null)
             Debug.Log("The game manager is null.");
+
+        SetThrusterSlider(0);
     }
 
     public void UpdateAmmoCount(int lasers) {
@@ -72,5 +75,20 @@ public class UIManager : MonoBehaviour {
         gameManager.GameOver();
         GameOverDisplay();
         RestartDisplay();
+    }
+
+    public void IncreaseThrusterSlider() {
+        float addPerSecond = 0.1f;
+        thrusterSlider.value += addPerSecond * Time.deltaTime;
+    }
+
+    public void DecreaseThrusterSlider() {
+        float subtractPerSecond = 0.1f;
+        thrusterSlider.value -= subtractPerSecond * Time.deltaTime;
+    }
+
+    public void SetThrusterSlider(float amount) {
+        float clampedAmount = Mathf.Clamp(amount, thrusterSlider.minValue, thrusterSlider.maxValue);
+        thrusterSlider.value = clampedAmount;
     }
 }

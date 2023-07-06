@@ -28,6 +28,8 @@ public class Player : MonoBehaviour {
     private bool isTripleShotPowerUpActive;
     private bool isSpeedPowerUpActive;
     private bool isWavePowerUpActive;
+    private bool isShiftSpeedActive;
+    private bool isShiftSpeedCoolingDown;
 
     private int score;
     private UIManager uiManager;
@@ -35,8 +37,6 @@ public class Player : MonoBehaviour {
     private int currentShieldProtection;
     private SpriteRenderer shieldVisualizer;
     private float timeInvincibleUntil = 0;
-
-    WaitForSeconds wait = new WaitForSeconds(5);
 
     public bool IsInvincible => Time.time <= timeInvincibleUntil;
     public bool IsShieldPowerUpActive => currentShieldProtection > 0;
@@ -69,24 +69,49 @@ public class Player : MonoBehaviour {
         float verticalInput = Input.GetAxis("Vertical");
 
         Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
-        if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && isSpeedPowerUpActive == false)
-            speed = shiftSpeed;
-        else if (isSpeedPowerUpActive == false)
-            speed = GetBaseSpeed();
+        ShiftSpeedIncrease();
         transform.Translate(direction * speed * Time.deltaTime);
 
-        //Part 1: Get it!
         Vector3 previousPosition = transform.position;
 
-        //Part 2: Change it!
         previousPosition = new Vector3(previousPosition.x, Mathf.Clamp(previousPosition.y, -3.6f, 0), 0);
         if (previousPosition.x >= 11.3f)
             previousPosition = new Vector3(-11.3f, previousPosition.y, 0);
         else if (previousPosition.x <= -11.3f)
             previousPosition = new Vector3(11.3f, previousPosition.y, 0);
-
-        //Part 3: Set it!
         transform.position = previousPosition;
+    }
+
+    private void ShiftSpeedIncrease() {
+        if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && isSpeedPowerUpActive == false && isShiftSpeedActive == false && isShiftSpeedCoolingDown == false) {
+            isShiftSpeedActive = true;
+            speed = shiftSpeed;
+            StartCoroutine(ShiftSpeedActiveCoroutine());
+            StartCoroutine(ShiftSpeedCooldownCoroutine());
+        }
+        else if (isSpeedPowerUpActive == false)
+            speed = GetBaseSpeed();
+    }
+
+    //can hold shift for 3 seconds
+    //cooldown is for 20 seconds
+    private IEnumerator ShiftSpeedActiveCoroutine() {
+        WaitForSeconds wait = new WaitForSeconds(3);
+        while (isShiftSpeedActive) {
+            yield return wait;
+            uiManager.IncreaseThrusterSlider();
+            isShiftSpeedActive = false;
+            isShiftSpeedCoolingDown = true;
+        }
+    }
+
+    private IEnumerator ShiftSpeedCooldownCoroutine() {
+        WaitForSeconds wait = new WaitForSeconds(20);
+        while (isShiftSpeedCoolingDown) {
+            yield return wait;
+            uiManager.DecreaseThrusterSlider();
+            isShiftSpeedCoolingDown = false;
+        }
     }
 
     private void FireLaser() {
@@ -188,6 +213,7 @@ public class Player : MonoBehaviour {
     }
 
     private IEnumerator TripleShotPowerDownCoroutine() {
+        WaitForSeconds wait = new WaitForSeconds(5);
         while (isTripleShotPowerUpActive) {
             yield return wait;
             isTripleShotPowerUpActive = false;
@@ -202,6 +228,7 @@ public class Player : MonoBehaviour {
     }
 
     private IEnumerator SpeedPowerDownCoroutine() {
+        WaitForSeconds wait = new WaitForSeconds(5);
         while (isSpeedPowerUpActive) {
             yield return wait;
             speed /= speedPowerUpMultiplier;
@@ -234,6 +261,7 @@ public class Player : MonoBehaviour {
     }
 
     private IEnumerator WavePowerDownCoroutine() {
+        WaitForSeconds wait = new WaitForSeconds(5);
         while (isWavePowerUpActive) {
             yield return wait;
             wave.SetActive(false);
