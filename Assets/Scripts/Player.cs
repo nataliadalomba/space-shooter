@@ -17,6 +17,7 @@ public class Player : MonoBehaviour {
     [SerializeField] private int totalShieldProtection = 3;
     [SerializeField] private GameObject shield;
     [SerializeField] private GameObject wave;
+    [SerializeField] private ThrusterBar thrusterBar;
 
     private float shiftSpeed = 7;
     private float speedPowerUpMultiplier = 2;
@@ -84,8 +85,6 @@ public class Player : MonoBehaviour {
 
     private void ShiftSpeedIncrease() {
         if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && isSpeedPowerUpActive == false && isShiftSpeedActive == false && isShiftSpeedCoolingDown == false) {
-            isShiftSpeedActive = true;
-            speed = shiftSpeed;
             StartCoroutine(ShiftSpeedActiveCoroutine());
             StartCoroutine(ShiftSpeedCooldownCoroutine());
         }
@@ -93,23 +92,37 @@ public class Player : MonoBehaviour {
             speed = GetBaseSpeed();
     }
 
-    //can hold shift for 3 seconds
-    //cooldown is for 20 seconds
+    //private void ShiftSpeedActive() {
+    //    isShiftSpeedActive = true;
+    //    while (isShiftSpeedActive) {
+    //        speed = shiftSpeed;
+    //        thrusterBar.IncreaseThrusterSlider();
+    //        float shiftSpeedActivePeriod = 3f;
+    //        float canShiftSpeed = Time.time + shiftSpeedActivePeriod;
+    //        if (Time.time > canShiftSpeed) {
+    //            isShiftSpeedActive = false;
+    //        }
+    //    }
+    //    isShiftSpeedCoolingDown = true;
+    //}
+
     private IEnumerator ShiftSpeedActiveCoroutine() {
         WaitForSeconds wait = new WaitForSeconds(3);
+        isShiftSpeedActive = true;
         while (isShiftSpeedActive) {
             yield return wait;
-            uiManager.IncreaseThrusterSlider();
+            speed = shiftSpeed;
+            thrusterBar.IncreaseThrusterSlider();
             isShiftSpeedActive = false;
-            isShiftSpeedCoolingDown = true;
         }
+            isShiftSpeedCoolingDown = true;
     }
 
     private IEnumerator ShiftSpeedCooldownCoroutine() {
         WaitForSeconds wait = new WaitForSeconds(20);
         while (isShiftSpeedCoolingDown) {
             yield return wait;
-            uiManager.DecreaseThrusterSlider();
+            thrusterBar.DecreaseThrusterSlider();
             isShiftSpeedCoolingDown = false;
         }
     }

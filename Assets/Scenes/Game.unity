@@ -504,6 +504,7 @@ GameObject:
   m_Component:
   - component: {fileID: 210932280}
   - component: {fileID: 210932281}
+  - component: {fileID: 210932282}
   m_Layer: 5
   m_Name: Thruster Bar
   m_TagString: Untagged
@@ -582,6 +583,49 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &210932282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 210932279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9540f11a4b403bc43939c848f1be1058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 210932281}
+  gradient:
+    serializedVersion: 2
+    key0: {r: 0, g: 0.4437964, b: 1, a: 1}
+    key1: {r: 0.8679245, g: 0.4298199, b: 0.061409745, a: 1}
+    key2: {r: 1, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 43369
+    ctime2: 65535
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 3
+    m_NumAlphaKeys: 2
+  fill: {fileID: 1144868016}
 --- !u!1 &254611965
 GameObject:
   m_ObjectHideFlags: 0
@@ -1204,6 +1248,7 @@ MonoBehaviour:
   totalShieldProtection: 3
   shield: {fileID: 1137117087}
   wave: {fileID: 162138755}
+  thrusterBar: {fileID: 210932282}
 --- !u!212 &761659932
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1924,7 +1969,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.045169078, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -2273,7 +2318,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 9fe6f40efddf0b64fb68a3382b14a4db, type: 3}
   laserCount: {fileID: 1191270407}
   laserCountAnim: {fileID: 1191270409}
-  thrusterSlider: {fileID: 210932281}
 --- !u!114 &1616246724
 MonoBehaviour:
   m_ObjectHideFlags: 0
