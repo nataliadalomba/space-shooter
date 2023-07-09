@@ -9,5 +9,7 @@ Thruster Cooldown System
 <br />
 
 Misc:
-1. Learn properties instead of manually managing bools.
-2. Simplify long if condition(s).
+1. Update all getter and setter methods as well as setting variables manually. Use properties instead.
+2. Break up Player class.
+3. Learn new input system.
+4. Change font in game.

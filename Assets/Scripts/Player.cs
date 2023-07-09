@@ -19,7 +19,7 @@ public class Player : MonoBehaviour {
     [SerializeField] private GameObject wave;
     [SerializeField] private ThrusterBar thrusterBar;
 
-    private float shiftSpeed = 7;
+    private float shiftSpeed = 10;
     private float speedPowerUpMultiplier = 2;
 
     private new AudioSource audio;
@@ -29,8 +29,6 @@ public class Player : MonoBehaviour {
     private bool isTripleShotPowerUpActive;
     private bool isSpeedPowerUpActive;
     private bool isWavePowerUpActive;
-    private bool isShiftSpeedActive;
-    private bool isShiftSpeedCoolingDown;
 
     private int score;
     private UIManager uiManager;
@@ -41,6 +39,10 @@ public class Player : MonoBehaviour {
 
     public bool IsInvincible => Time.time <= timeInvincibleUntil;
     public bool IsShieldPowerUpActive => currentShieldProtection > 0;
+
+    public float timeUsedShiftSpeed;
+    public bool IsShiftSpeedActive => Time.time < (timeUsedShiftSpeed + 3);
+    public bool IsShiftSpeedCoolingDown => Time.time < (timeUsedShiftSpeed + 20);
 
     private void Start() {
         transform.position = Vector3.zero;
@@ -84,46 +86,23 @@ public class Player : MonoBehaviour {
     }
 
     private void ShiftSpeedIncrease() {
-        if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && isSpeedPowerUpActive == false && isShiftSpeedActive == false && isShiftSpeedCoolingDown == false) {
-            StartCoroutine(ShiftSpeedActiveCoroutine());
-            StartCoroutine(ShiftSpeedCooldownCoroutine());
-        }
-        else if (isSpeedPowerUpActive == false)
+        bool isShiftSpeedAvailable = !isSpeedPowerUpActive && !IsShiftSpeedActive && !IsShiftSpeedCoolingDown;
+        if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && isShiftSpeedAvailable)
+            StartCoroutine(ShiftSpeedCoroutine());
+        else if (!isSpeedPowerUpActive)
             speed = GetBaseSpeed();
     }
 
-    //private void ShiftSpeedActive() {
-    //    isShiftSpeedActive = true;
-    //    while (isShiftSpeedActive) {
-    //        speed = shiftSpeed;
-    //        thrusterBar.IncreaseThrusterSlider();
-    //        float shiftSpeedActivePeriod = 3f;
-    //        float canShiftSpeed = Time.time + shiftSpeedActivePeriod;
-    //        if (Time.time > canShiftSpeed) {
-    //            isShiftSpeedActive = false;
-    //        }
-    //    }
-    //    isShiftSpeedCoolingDown = true;
-    //}
-
-    private IEnumerator ShiftSpeedActiveCoroutine() {
-        WaitForSeconds wait = new WaitForSeconds(3);
-        isShiftSpeedActive = true;
-        while (isShiftSpeedActive) {
-            yield return wait;
+    private IEnumerator ShiftSpeedCoroutine() {
+        timeUsedShiftSpeed = Time.time;
+        while (IsShiftSpeedActive) {
             speed = shiftSpeed;
             thrusterBar.IncreaseThrusterSlider();
-            isShiftSpeedActive = false;
+            yield return null;
         }
-            isShiftSpeedCoolingDown = true;
-    }
-
-    private IEnumerator ShiftSpeedCooldownCoroutine() {
-        WaitForSeconds wait = new WaitForSeconds(20);
-        while (isShiftSpeedCoolingDown) {
-            yield return wait;
+        while (IsShiftSpeedCoolingDown) {
             thrusterBar.DecreaseThrusterSlider();
-            isShiftSpeedCoolingDown = false;
+            yield return null;
         }
     }
 
