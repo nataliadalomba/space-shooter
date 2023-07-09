@@ -7,3 +7,7 @@ Thruster Cooldown System
 3. During cooldown period, the bar slowly empties.
 
 <br />
+
+Misc:
+1. Learn properties instead of manually managing bools.
+2. Simplify long if condition(s).
