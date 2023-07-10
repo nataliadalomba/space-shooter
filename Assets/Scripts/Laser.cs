@@ -2,17 +2,16 @@
 
 public class Laser : MonoBehaviour {
 
-    [SerializeField] private float speed = 8f;
+    [SerializeField] private float speed = 8;
     private bool isEnemyLaser;
 
-    
-    void Update() {
+    private void Update() {
         if (isEnemyLaser == false)
             PlayerLaser();
         else EnemyLaser();
     }
 
-    void PlayerLaser() {
+    private void PlayerLaser() {
         transform.Translate(Vector3.up * speed * Time.deltaTime);
         
         if (transform.position.y >= 8) {
@@ -23,7 +22,7 @@ public class Laser : MonoBehaviour {
         }
     }
 
-    void EnemyLaser() {
+    private void EnemyLaser() {
         transform.Translate(Vector3.down * speed * Time.deltaTime);
 
         if (transform.position.y <= -8) {
@@ -43,7 +42,7 @@ public class Laser : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D other) {
         if (isEnemyLaser) {
-            Player player = other.GetComponentInParent<Player>();
+            HealthEntity player = other.GetComponentInParent<HealthEntity>();
 
             if (player != null) {
                 player.TryDamage();

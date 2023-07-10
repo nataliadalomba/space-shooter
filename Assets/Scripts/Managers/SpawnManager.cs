@@ -29,7 +29,23 @@ public class SpawnManager : MonoBehaviour {
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private GameObject enemyContainer;
 
+    private HealthEntity playerHealth;
+
     private bool spawning = true;
+
+    private void Start() {
+        GameObject player = GameObject.FindWithTag("Player");
+        if (player != null) {
+            playerHealth = player.GetComponent<HealthEntity>();
+            if (playerHealth != null)
+                playerHealth.onDamaged += CheckForDeath;
+        }
+    }
+
+    private void OnDestroy() {
+        if (playerHealth != null)
+            playerHealth.onDamaged -= CheckForDeath;
+    }
 
     public void StartSpawning() {
         StartCoroutine(SpawnEnemyCoroutine());
@@ -37,7 +53,7 @@ public class SpawnManager : MonoBehaviour {
         StartCoroutine(SpawnProvisionCoroutine());
     }
 
-    IEnumerator SpawnEnemyCoroutine() {
+    private IEnumerator SpawnEnemyCoroutine() {
         WaitForSeconds wait = new WaitForSeconds(3);
         yield return wait;
         while (spawning) {
@@ -49,7 +65,7 @@ public class SpawnManager : MonoBehaviour {
         }
     }
 
-    IEnumerator SpawnPowerUpCoroutine() {
+    private IEnumerator SpawnPowerUpCoroutine() {
         WaitForSeconds wait = new WaitForSeconds(3);
         yield return wait;
         while (spawning) {
@@ -62,7 +78,7 @@ public class SpawnManager : MonoBehaviour {
         }
     }
 
-    IEnumerator SpawnProvisionCoroutine() {
+    private IEnumerator SpawnProvisionCoroutine() {
         WaitForSeconds wait = new WaitForSeconds(3);
         yield return wait;
         while (spawning) {
@@ -73,6 +89,11 @@ public class SpawnManager : MonoBehaviour {
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 8.5f, 0);
             Instantiate(provisions[randProvision].prefab, posToSpawn, Quaternion.identity);
         }
+    }
+
+    private void CheckForDeath() {
+        if (playerHealth.Health <= 0)
+            OnPlayerDeath();
     }
 
     public void OnPlayerDeath() {

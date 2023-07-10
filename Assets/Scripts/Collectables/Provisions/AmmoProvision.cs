@@ -1,6 +1,9 @@
-﻿public class AmmoProvision : Collectable {
+﻿using UnityEngine;
 
-    protected override void OnPickUp(Player player) {
-        player.AddAmmoCount(5);
+public class AmmoProvision : Collectable {
+
+    protected override void OnPickUp(GameObject player) {
+        if (player.TryGetComponent(out ShootController controller))
+            controller.AddAmmoCount(5);
     }
 }

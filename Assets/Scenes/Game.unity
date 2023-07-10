@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748171, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -577,7 +577,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 3
+  m_MaxValue: 1
   m_WholeNumbers: 0
   m_Value: 0
   m_OnValueChanged:
@@ -595,6 +595,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9540f11a4b403bc43939c848f1be1058, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  target: {fileID: 761659938}
   slider: {fileID: 210932281}
   gradient:
     serializedVersion: 2
@@ -1210,8 +1211,12 @@ GameObject:
   - component: {fileID: 761659933}
   - component: {fileID: 761659932}
   - component: {fileID: 761659934}
-  - component: {fileID: 761659931}
   - component: {fileID: 761659935}
+  - component: {fileID: 761659931}
+  - component: {fileID: 761659939}
+  - component: {fileID: 761659938}
+  - component: {fileID: 761659937}
+  - component: {fileID: 761659936}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1231,24 +1236,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5adb8ec7aa95504488b0c66bb58da562, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
-  laserPrefab: {fileID: 6043956449377216115, guid: a052ff7991683ad4c9741c6323f8936b,
-    type: 3}
-  wingDamageSprites:
-  - {fileID: 319085999}
-  - {fileID: 1751732309}
-  laserClip: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
-  outOfAmmoClip: {fileID: 8300000, guid: db7de236910362642831bb82448492a0, type: 3}
-  ammoCount: 15
-  fireRate: 0.15
-  health: 3
-  tripleShotLasersPrefab: {fileID: 4902251547736761636, guid: 4ce221b5e077a274a930119f053ca535,
-    type: 3}
-  thrusterSprite: {fileID: 1002293874}
-  totalShieldProtection: 3
-  shield: {fileID: 1137117087}
+  health: {fileID: 761659937}
   wave: {fileID: 162138755}
-  thrusterBar: {fileID: 210932282}
 --- !u!212 &761659932
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1440,6 +1429,76 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &761659936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 761659930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c79f5ce317471c64b9059e01834358cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 761659937}
+  wingDamageSprites:
+  - {fileID: 1751732309}
+  - {fileID: 319085999}
+--- !u!114 &761659937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 761659930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3460298b5c48054b88b6f75d38a08ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 3
+  shield: {fileID: 1137117089}
+  totalShieldProtection: 3
+--- !u!114 &761659938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 761659930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf5ba88cfdf61eb4a9f3ffba692d1ea1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 5
+  speedBoost: 7
+  speedBoostDuration: 3
+  speedBoostCooldown: 20
+  screenSizeX: 11.3
+  thrusterSprite: {fileID: 1002293874}
+  speedPowerUpMultiplier: 2
+--- !u!114 &761659939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 761659930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab61a0490df9d3b4ea9c984710dd679b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  laserPrefab: {fileID: 6043956449377216115, guid: a052ff7991683ad4c9741c6323f8936b,
+    type: 3}
+  laserClip: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
+  outOfAmmoClip: {fileID: 8300000, guid: db7de236910362642831bb82448492a0, type: 3}
+  fireRate: 0.15
+  ammoCount: 15
+  tripleShotLasersPrefab: {fileID: 4902251547736761636, guid: 4ce221b5e077a274a930119f053ca535,
+    type: 3}
 --- !u!1 &1002293871
 GameObject:
   m_ObjectHideFlags: 0
