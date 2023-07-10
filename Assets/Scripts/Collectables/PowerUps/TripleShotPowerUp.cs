@@ -1,5 +1,8 @@
-﻿public class TripleShotPowerUp : PowerUp {
-    protected override void ApplyPowerUp(Player player) {
-        player.TripleShotPowerUpActive();
+﻿using UnityEngine;
+
+public class TripleShotPowerUp : PowerUp {
+    protected override void ApplyPowerUp(GameObject player) {
+        if (player.TryGetComponent(out ShootController controller))
+            controller.TripleShotPowerUpActive();
     }
 }

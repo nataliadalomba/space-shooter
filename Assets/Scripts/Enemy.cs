@@ -1,10 +1,15 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+
+using Random = UnityEngine.Random; //NOTE: This is an alias, because System.Random also exists!
 
 public class Enemy : MonoBehaviour {
+    public static event Action onAnyDefeated;
+
     [SerializeField] private float speed = 4f;
     [SerializeField] private GameObject laserPrefab;
 
-    private Player player;
+    private HealthEntity playerHealth;
     private Animator anim;
 
     private new AudioSource audio;
@@ -16,13 +21,14 @@ public class Enemy : MonoBehaviour {
     private bool isAlive = true;
 
     private void Start() {
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        playerHealth = player.GetComponent<HealthEntity>();
         anim = GetComponent<Animator>();
         audio = GetComponent<AudioSource>();
         col2D = GetComponent<Collider2D>();
 
-        if (player == null)
-            Debug.LogError("The Player component on the Enemy is null.");
+        if (playerHealth == null)
+            Debug.LogError("The " + nameof(HealthEntity) + " component on the " + nameof(player) + " (" + player.name + ") is null.", player);
         if (anim == null)
             Debug.LogError("The Enemy Animator is null.");
         if (audio == null)
@@ -56,31 +62,38 @@ public class Enemy : MonoBehaviour {
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
-        if (other.tag == "Player" || other.tag == "Wave") {
-            player.TryDamage();
+        if (other.tag == "Player")
+            TouchDamageWithPlayer();
+        else if (other.tag == "Laser" || other.tag == "Wave")
+            DefeatFromPlayer(other);
+    }
+
+    private void TouchDamageWithPlayer() {
+        playerHealth.TryDamage();
+        anim.SetTrigger("OnEnemyDeath");
+        speed = 0;
+        audio.Play();
+
+        col2D.enabled = false;
+        isAlive = false;
+        Destroy(this.gameObject, 3);
+    }
+
+    private void DefeatFromPlayer(Collider2D other) {
+        Laser laser = other.GetComponent<Laser>();
+        if (laser.IsEnemyLaser() == false) {
+            Destroy(other.gameObject);
+
             anim.SetTrigger("OnEnemyDeath");
             speed = 0;
             audio.Play();
 
             col2D.enabled = false;
             isAlive = false;
+
+            if (onAnyDefeated != null)
+                onAnyDefeated();
             Destroy(this.gameObject, 3);
-        }
-
-        if (other.tag == "Laser") {
-            Laser laser = other.GetComponent<Laser>();
-            if (laser.IsEnemyLaser() == false) {
-                Destroy(other.gameObject);
-                if (player != null)
-                    player.AddToScore(100);
-                anim.SetTrigger("OnEnemyDeath");
-                speed = 0;
-                audio.Play();
-
-                col2D.enabled = false;
-                isAlive = false;
-                Destroy(this.gameObject, 3);
-            }
         }
     }
 }

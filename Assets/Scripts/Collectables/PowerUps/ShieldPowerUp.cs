@@ -1,5 +1,8 @@
-﻿public class ShieldPowerUp : PowerUp {
-    protected override void ApplyPowerUp(Player player) {
-        player.ShieldPowerUpActive();
+﻿using UnityEngine;
+
+public class ShieldPowerUp : PowerUp {
+    protected override void ApplyPowerUp(GameObject player) {
+        if (player.TryGetComponent(out HealthEntity entity))
+            entity.ShieldPowerUpActive();
     }
 }

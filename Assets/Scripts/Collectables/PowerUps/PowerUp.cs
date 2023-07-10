@@ -1,9 +1,11 @@
-﻿public class PowerUp : Collectable {
+﻿using UnityEngine;
 
-    protected override void OnPickUp(Player player) {
+public class PowerUp : Collectable {
+
+    protected override void OnPickUp(GameObject player) {
         ApplyPowerUp(player);
     }
 
     //TODO: Make abstract later
-    protected virtual void ApplyPowerUp(Player player) { }
+    protected virtual void ApplyPowerUp(GameObject player) { }
 }

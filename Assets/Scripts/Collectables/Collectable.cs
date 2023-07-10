@@ -2,7 +2,7 @@
 
 public class Collectable : MonoBehaviour {
 
-    [SerializeField] private float speed = 3f;
+    [SerializeField] private float speed = 3;
     [SerializeField] private AudioClip clip;
 
     private void Update() {
@@ -12,14 +12,13 @@ public class Collectable : MonoBehaviour {
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
-        Player player = other.GetComponent<Player>();
-        if (player != null) {
-            AudioSource.PlayClipAtPoint(clip, transform.position);
-            OnPickUp(player);
-            Destroy(gameObject);
-        }
+        GameObject player = other.gameObject;
+
+        AudioSource.PlayClipAtPoint(clip, transform.position);
+        OnPickUp(player);
+        Destroy(gameObject);
     }
 
     //TODO: make this abstract later
-    protected virtual void OnPickUp(Player player) { }
+    protected virtual void OnPickUp(GameObject player) { }
 }

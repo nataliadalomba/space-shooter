@@ -1,6 +1,9 @@
-﻿public class HealthProvision : Collectable {
+﻿using UnityEngine;
 
-    protected override void OnPickUp(Player player) {
-        player.AddHealth();
+public class HealthProvision : Collectable {
+
+    protected override void OnPickUp(GameObject player) {
+        if (player.TryGetComponent(out HealthEntity entity))
+            entity.Heal();
     }
 }
