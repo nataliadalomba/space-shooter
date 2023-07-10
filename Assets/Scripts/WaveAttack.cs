@@ -9,19 +9,18 @@ public class WaveAttack : MonoBehaviour {
 
     private bool isWavePowerUpActive;
 
+    public bool IsWavePowerUpActive => isWavePowerUpActive;
+
     public void WavePowerUpActive() {
-        isWavePowerUpActive = true;
+        StartCoroutine(WavePowerDownCoroutine());
         health.StartInvincibility(5);
         wave.SetActive(true);
-        StartCoroutine(WavePowerDownCoroutine());
     }
 
     private IEnumerator WavePowerDownCoroutine() {
-        WaitForSeconds wait = new WaitForSeconds(5);
-        while (isWavePowerUpActive) {
-            yield return wait;
-            wave.SetActive(false);
-            isWavePowerUpActive = false;
-        }
+        isWavePowerUpActive = true;
+        yield return new WaitForSeconds(5);
+        wave.SetActive(false);
+        isWavePowerUpActive = false;
     }
 }

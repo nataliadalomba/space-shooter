@@ -2,7 +2,7 @@
 using UnityEngine;
 
 public class HealthEntity : MonoBehaviour {
-    [SerializeField, Min(1)] private int health;
+    [SerializeField, Min(1)] private int health = 3;
 
     [Header("Shield Protection")]
     [SerializeField] private SpriteRenderer shield;

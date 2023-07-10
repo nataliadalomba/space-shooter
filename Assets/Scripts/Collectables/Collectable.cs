@@ -12,11 +12,13 @@ public class Collectable : MonoBehaviour {
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
-        GameObject player = other.gameObject;
+        if (other.tag == "Player") {
+            GameObject player = other.gameObject;
 
-        AudioSource.PlayClipAtPoint(clip, transform.position);
-        OnPickUp(player);
-        Destroy(gameObject);
+            AudioSource.PlayClipAtPoint(clip, transform.position);
+            OnPickUp(player);
+            Destroy(gameObject);
+        }
     }
 
     //TODO: make this abstract later

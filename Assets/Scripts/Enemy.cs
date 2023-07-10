@@ -64,8 +64,8 @@ public class Enemy : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.tag == "Player")
             TouchDamageWithPlayer();
-        else if (other.tag == "Laser" || other.tag == "Wave")
-            DefeatFromPlayer(other);
+        else
+            CheckToDefeatFromPlayer(other);
     }
 
     private void TouchDamageWithPlayer() {
@@ -79,10 +79,11 @@ public class Enemy : MonoBehaviour {
         Destroy(this.gameObject, 3);
     }
 
-    private void DefeatFromPlayer(Collider2D other) {
-        Laser laser = other.GetComponent<Laser>();
-        if (laser.IsEnemyLaser() == false) {
-            Destroy(other.gameObject);
+    private bool CheckToDefeatFromPlayer(Collider2D other) {
+        if ((other.TryGetComponent(out Laser laser) && !laser.IsEnemyLaser())
+            || other.tag == "Wave") {
+            if (laser != null)
+                Destroy(laser.gameObject);
 
             anim.SetTrigger("OnEnemyDeath");
             speed = 0;
@@ -94,6 +95,8 @@ public class Enemy : MonoBehaviour {
             if (onAnyDefeated != null)
                 onAnyDefeated();
             Destroy(this.gameObject, 3);
+            return true;
         }
+        return false;
     }
 }
