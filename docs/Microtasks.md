@@ -9,7 +9,6 @@ Thruster Cooldown System
 <br />
 
 Misc:
-1. Update all getter and setter methods as well as setting variables manually. Use properties instead.
-2. Break up Player class.
-3. Learn new input system.
-4. Change font in game.
+1. See if I can remove the Wave Attack script from the Player.
+2. Learn new input system.
+3. Fix delay in movement.
